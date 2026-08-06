@@ -261,7 +261,11 @@ export default function AdminPage() {
   }
 
   const answerEntries = detail?.submission
-    ? Object.entries(detail.submission.answers).filter(([k]) => k !== "__files")
+    ? Object.entries(detail.submission.answers).filter(([k, v]) => {
+        if (k === "__files") return false;
+        if (typeof v === "string" && /fakepath/i.test(v)) return false;
+        return true;
+      })
     : [];
   const uploadedFiles = detail?.files || [];
 

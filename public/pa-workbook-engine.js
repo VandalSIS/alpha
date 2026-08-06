@@ -421,9 +421,15 @@ function persist(opts){
   opts = opts || {};
   markSaved();
   var seq = ++saveSeq;
+  // Never persist browser fakepath strings from <input type="file">
+  var clean = Object.assign({}, D.data);
+  Object.keys(clean).forEach(function(k){
+    var v = clean[k];
+    if (typeof v === 'string' && /fakepath/i.test(v)) delete clean[k];
+  });
   var payload = {
     step: D.step,
-    answers: Object.assign({}, D.data, { __files: D.files }),
+    answers: Object.assign({}, clean, { __files: D.files }),
     done: !!opts.done
   };
   return fetch('/api/workbook', {
@@ -739,6 +745,7 @@ var view = el('pw-view');
 
 view.addEventListener('input', function(e){
   var t = e.target;
+  if (t.type === 'file') return; // browsers expose C:\fakepath\… — real files live in D.files
   if (t.dataset && t.dataset.key){ D.data[t.dataset.key] = t.value; }
   else if (t.id){ D.data[t.id] = t.value; }
   refreshCounters();

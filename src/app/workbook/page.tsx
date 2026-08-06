@@ -80,7 +80,7 @@ export default function WorkbookPage() {
     }
 
     const s = document.createElement("script");
-    s.src = `/pa-workbook-engine.js?v=7`;
+    s.src = `/pa-workbook-engine.js?v=8`;
     s.async = false;
     s.onload = () => {
       window.__PA_ENGINE_LOADED = true;
