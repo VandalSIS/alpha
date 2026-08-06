@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createReadStream, existsSync } from "fs";
+import { get } from "@vercel/blob";
 import { prisma } from "@/lib/db";
-import { uploadAbsolutePath, isRemoteStored } from "@/lib/uploads";
+import { uploadAbsolutePath, isRemoteStored, useBlobStorage } from "@/lib/uploads";
 import { Readable } from "stream";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -20,7 +21,25 @@ export async function GET(req: Request, ctx: Ctx) {
   const row = await prisma.uploadedFile.findUnique({ where: { id } });
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Vercel Blob (or any remote URL stored in storedName)
+  // Private Vercel Blob — stream through this authenticated admin route
+  if (isRemoteStored(row.storedName) && useBlobStorage()) {
+    const result = await get(row.storedName, {
+      access: "private",
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+    if (!result || !result.stream) {
+      return NextResponse.json({ error: "File missing in Blob" }, { status: 404 });
+    }
+    return new NextResponse(result.stream, {
+      headers: {
+        "Content-Type": row.mimeType || result.blob?.contentType || "application/octet-stream",
+        "Content-Disposition": `attachment; filename="${row.originalName.replace(/"/g, "")}"`,
+        ...(row.size ? { "Content-Length": String(row.size) } : {}),
+      },
+    });
+  }
+
+  // Legacy public blob URL (redirect) or local disk
   if (isRemoteStored(row.storedName)) {
     return NextResponse.redirect(row.storedName, 302);
   }

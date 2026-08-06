@@ -47,7 +47,7 @@ export async function storeUploadFile(file: File, invitationId: string) {
 
   if (useBlobStorage()) {
     const blob = await put(key, buf, {
-      access: "public",
+      access: "private",
       contentType: mimeType,
       addRandomSuffix: false,
       token: process.env.BLOB_READ_WRITE_TOKEN,
