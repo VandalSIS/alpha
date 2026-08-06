@@ -157,7 +157,7 @@ export async function sendResumeLinkEmail(opts: {
 
 Your answers are saved. Continue from where you stopped: ${opts.resumeUrl}
 
-The link works for 30 days. You can also return anytime with your invitation code at ${workbookEnterUrl()}.
+The link works for 30 days. You can also return anytime with your invitation code at ${publicEntryUrl()}.
 
 Nothing is submitted until you complete the final step.`,
   });

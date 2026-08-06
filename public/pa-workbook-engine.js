@@ -662,12 +662,14 @@ function renderReview(){
 
 function screenDone(){
   var email = val('p_email') || val('ack_name') || 'your email address';
+  var home = 'https://www.christianandtimbers.com/apply-for-ai-board-opportunities';
   return '<div class="pw-conf">'
    + '<p class="pw-eyebrow">Project Alpha</p>'
    + '<h1 class="pw-h1">Your workbook has been received</h1>'
    + '<p class="pw-ref">Reference ' + esc(D.ref) + '</p>'
    + '<p class="pw-intro" style="margin-top:34px">The Project Alpha team will review your responses and contact you within five business days to arrange your strategy review. A confirmation has been sent to ' + esc(email) + '.</p>'
    + '<p class="pw-note" style="margin-top:22px">Questions: <a href="mailto:projectalpha@christian-timbers.com" style="color:var(--ct-black);font-weight:700;box-shadow:inset 0 -8px 0 var(--ct-yellow);text-decoration:none">projectalpha@christian-timbers.com</a></p>'
+   + '<p style="margin-top:38px"><a class="pw-btn" href="' + home + '">Return to Project Alpha</a></p>'
    + '</div>';
 }
 
@@ -912,7 +914,7 @@ function fillTestAnswers(){
     } else if (f.t === 'tel'){
       D.data[f.id] = '+1 415 000 0000';
     } else {
-      D.data[f.id] = 'Test answer (' + f.id + ').';
+      D.data[f.id] = 'Test answer';
     }
   }
   // Two passes: parents first, then showIf / perSel dependents
