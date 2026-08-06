@@ -18,7 +18,7 @@ function appUrl(path = "") {
 function publicEntryUrl() {
   return (
     process.env.NEXT_PUBLIC_ENTRY_URL ||
-    "https://www.christianandtimbers.com/apply-for-ai-board-opportunities#enter"
+    "https://www.christianandtimbers.com/apply-for-ai-board-opportunities"
   );
 }
 
@@ -101,7 +101,6 @@ export async function sendInviteEmail(opts: {
 }) {
   const first = firstName(opts.name);
   const entry = opts.entryUrl || publicEntryUrl();
-  const direct = workbookEnterUrl();
   await sendMail({
     to: opts.email,
     subject: "Project Alpha: your invitation",
@@ -114,8 +113,6 @@ The programme begins with a confidential Board Aspiration and Readiness Workbook
 Your invitation code: ${opts.code}
 
 Begin here: ${entry}
-
-Or open the workbook directly: ${direct}
 
 Enter the code and this email address to open your workbook. You may return with the same code whenever you need. The invitation is valid for 30 days.
 
