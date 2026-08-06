@@ -1,12 +1,28 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/session";
-import { isAllowedUpload, storeUploadFile, removeStoredFile } from "@/lib/uploads";
+import {
+  isAllowedUpload,
+  storeUploadFile,
+  removeStoredFile,
+  useBlobStorage,
+} from "@/lib/uploads";
 
 /** Upload CV / supporting docs for the signed-in participant. */
 export async function POST(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  // On Vercel, disk uploads do not persist — Blob is required.
+  if (process.env.VERCEL && !useBlobStorage()) {
+    return NextResponse.json(
+      {
+        error:
+          "File storage is not configured (missing BLOB_READ_WRITE_TOKEN). Add Vercel Blob in the project Storage tab.",
+      },
+      { status: 503 }
+    );
+  }
 
   try {
     const form = await req.formData();
@@ -20,13 +36,15 @@ export async function POST(req: Request) {
     const check = isAllowedUpload(file);
     if (!check.ok) return NextResponse.json({ error: check.error }, { status: 400 });
 
-    // Cap optional extras at 4; required CV at 1 — enforced in client too
     const existing = await prisma.uploadedFile.count({
       where: { invitationId: session.invitationId, fieldId },
     });
     const max = fieldId === "u_opt" ? 4 : 1;
     if (existing >= max) {
-      return NextResponse.json({ error: `You can upload at most ${max} file(s) here.` }, { status: 400 });
+      return NextResponse.json(
+        { error: `You can upload at most ${max} file(s) here.` },
+        { status: 400 }
+      );
     }
 
     const stored = await storeUploadFile(file, session.invitationId);
@@ -52,7 +70,8 @@ export async function POST(req: Request) {
     });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    const msg = e instanceof Error ? e.message : "Upload failed";
+    return NextResponse.json({ error: msg || "Upload failed" }, { status: 500 });
   }
 }
 

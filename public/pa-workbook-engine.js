@@ -556,7 +556,7 @@ function renderField(f){
   } else if (f.t==='file'){
     var list = D.files[f.id] || [];
     h += labelFor(f, f.id) + helpFor(f);
-    h += '<div class="pw-drop">PDF or Word. Up to 15 MB per file.<br><input type="file" id="'+f.id+'" accept=".pdf,.doc,.docx" '+(f.max>1?'multiple':'')+' style="margin-top:12px"></div>';
+    h += '<div class="pw-drop">PDF or Word. Up to 4.5 MB per file.<br><input type="file" id="'+f.id+'" accept=".pdf,.doc,.docx" '+(f.max>1?'multiple':'')+' style="margin-top:12px"></div>';
     h += '<div class="pw-files" id="'+f.id+'-list">';
     list.forEach(function(item,i){
       h += '<div class="pw-file"><b>'+esc(fileLabel(item))+'</b> uploaded. <button type="button" data-rm="'+f.id+'" data-i="'+i+'">Remove</button></div>';

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createReadStream, existsSync } from "fs";
 import { prisma } from "@/lib/db";
-import { uploadAbsolutePath } from "@/lib/uploads";
+import { uploadAbsolutePath, isRemoteStored } from "@/lib/uploads";
 import { Readable } from "stream";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -19,6 +19,11 @@ export async function GET(req: Request, ctx: Ctx) {
   const { id } = await ctx.params;
   const row = await prisma.uploadedFile.findUnique({ where: { id } });
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  // Vercel Blob (or any remote URL stored in storedName)
+  if (isRemoteStored(row.storedName)) {
+    return NextResponse.redirect(row.storedName, 302);
+  }
 
   const abs = uploadAbsolutePath(row.storedName);
   if (!existsSync(abs)) {
