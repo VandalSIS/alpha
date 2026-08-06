@@ -1,7 +1,6 @@
 /**
- * Email layer — matches Project-Alpha-Emails.docx.
- * Set RESEND_API_KEY to send for real.
- * EMAIL_OVERRIDE redirects every message (for testing).
+ * Email layer — Project Alpha (aligned with Project-Alpha-Emails.docx + open-with-code flow).
+ * Set RESEND_API_KEY to send for real. EMAIL_OVERRIDE redirects every message for testing.
  */
 
 type Mail = {
@@ -23,6 +22,10 @@ function publicEntryUrl() {
   );
 }
 
+function workbookEnterUrl() {
+  return appUrl("/enter");
+}
+
 function signatory() {
   return process.env.EMAIL_SIGNATORY || "Project Alpha team";
 }
@@ -35,11 +38,28 @@ function firstName(name: string) {
   return name.split(" ")[0] || name;
 }
 
+function toHtml(text: string): string {
+  const esc = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  const withLinks = esc.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1">$1</a>');
+  return `<div style="font-family:Georgia,serif;font-size:16px;line-height:1.55;color:#141414">${withLinks
+    .split(/\n\n+/)
+    .map((p) => `<p style="margin:0 0 1em">${p.replace(/\n/g, "<br>")}</p>`)
+    .join("")}</div>`;
+}
+
 export async function sendMail(mail: Mail): Promise<void> {
   const from = process.env.EMAIL_FROM || "Project Alpha <projectalpha@christian-timbers.com>";
+  const replyTo = process.env.EMAIL_REPLY_TO || questionsEmail();
   const override = process.env.EMAIL_OVERRIDE?.trim();
   const to = override || mail.to;
-  const subject = override && override !== mail.to ? `[TEST → ${mail.to}] ${mail.subject}` : mail.subject;
+  const subject =
+    override && override.toLowerCase() !== mail.to.toLowerCase()
+      ? `[TEST → ${mail.to}] ${mail.subject}`
+      : mail.subject;
+  const html = mail.html || toHtml(mail.text);
 
   if (process.env.RESEND_API_KEY) {
     const res = await fetch("https://api.resend.com/emails", {
@@ -51,9 +71,10 @@ export async function sendMail(mail: Mail): Promise<void> {
       body: JSON.stringify({
         from,
         to,
+        reply_to: replyTo,
         subject,
         text: mail.text,
-        html: mail.html || undefined,
+        html,
       }),
     });
     if (!res.ok) {
@@ -80,6 +101,7 @@ export async function sendInviteEmail(opts: {
 }) {
   const first = firstName(opts.name);
   const entry = opts.entryUrl || publicEntryUrl();
+  const direct = workbookEnterUrl();
   await sendMail({
     to: opts.email,
     subject: "Project Alpha: your invitation",
@@ -93,7 +115,9 @@ Your invitation code: ${opts.code}
 
 Begin here: ${entry}
 
-Enter the code and this email address, and we will send you a secure sign-in link. The invitation is valid for 30 days.
+Or open the workbook directly: ${direct}
+
+Enter the code and this email address to open your workbook. You may return with the same code whenever you need. The invitation is valid for 30 days.
 
 Questions: ${questionsEmail()}
 
@@ -102,7 +126,7 @@ Christian & Timbers`,
   });
 }
 
-/** 2. Sign-in link — when code + email match */
+/** 2. Sign-in link — kept for optional flows / legacy */
 export async function sendSignInLinkEmail(opts: {
   name: string;
   email: string;
@@ -116,7 +140,7 @@ export async function sendSignInLinkEmail(opts: {
 
 Open your workbook here: ${opts.signInUrl}
 
-The link works once and expires in 60 minutes. Request another at any time from ${publicEntryUrl()}.
+You can also enter anytime with your invitation code at ${publicEntryUrl()}.
 
 If you did not request this, ignore this message or write to ${questionsEmail()}.`,
   });
@@ -136,7 +160,9 @@ export async function sendResumeLinkEmail(opts: {
 
 Your answers are saved. Continue from where you stopped: ${opts.resumeUrl}
 
-The link works for 30 days. Nothing is submitted until you complete the final step.`,
+The link works for 30 days. You can also return anytime with your invitation code at ${workbookEnterUrl()}.
+
+Nothing is submitted until you complete the final step.`,
   });
 }
 
@@ -191,14 +217,12 @@ Documents attached: ${opts.fileCount ?? 0}
 
 Open the record: ${opts.adminUrl}`;
 
-  // Primary inbox
   await sendMail({
     to,
     subject: `Project Alpha submission: ${opts.name}`,
     text,
   });
 
-  // Optional CC (e.g. assigned consultant)
   if (cc && cc.toLowerCase() !== to.toLowerCase()) {
     await sendMail({
       to: cc,
@@ -208,4 +232,4 @@ Open the record: ${opts.adminUrl}`;
   }
 }
 
-export { appUrl, publicEntryUrl };
+export { appUrl, publicEntryUrl, workbookEnterUrl };
