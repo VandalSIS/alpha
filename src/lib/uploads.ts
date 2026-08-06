@@ -22,7 +22,8 @@ export function isAllowedUpload(file: { name: string; type: string; size: number
   if (file.size > MAX_UPLOAD_BYTES) {
     return {
       ok: false as const,
-      error: "Each file must be 4.5 MB or smaller on this server. Compress the PDF or upload a lighter copy.",
+      error:
+        "Each file must be 4.5 MB or smaller on this server. Compress the PDF or upload a lighter copy.",
     };
   }
   if (file.type && !ALLOWED.has(file.type) && file.type !== "application/octet-stream") {
@@ -31,8 +32,17 @@ export function isAllowedUpload(file: { name: string; type: string; size: number
   return { ok: true as const };
 }
 
+/** Private Blob on Vercel uses BLOB_STORE_ID + OIDC; older setups use BLOB_READ_WRITE_TOKEN. */
 export function useBlobStorage() {
-  return !!process.env.BLOB_READ_WRITE_TOKEN;
+  return !!(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
+}
+
+/** Shared auth options for @vercel/blob SDK calls. */
+export function blobAuthOptions() {
+  const opts: { token?: string; storeId?: string } = {};
+  if (process.env.BLOB_READ_WRITE_TOKEN) opts.token = process.env.BLOB_READ_WRITE_TOKEN;
+  if (process.env.BLOB_STORE_ID) opts.storeId = process.env.BLOB_STORE_ID;
+  return opts;
 }
 
 export async function ensureUploadDir() {
@@ -50,7 +60,7 @@ export async function storeUploadFile(file: File, invitationId: string) {
       access: "private",
       contentType: mimeType,
       addRandomSuffix: false,
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      ...blobAuthOptions(),
     });
     return {
       storedName: blob.url,
@@ -61,7 +71,6 @@ export async function storeUploadFile(file: File, invitationId: string) {
     };
   }
 
-  // Local / non-Vercel: write to disk
   await ensureUploadDir();
   const storedName = path.basename(key);
   const dest = path.join(UPLOAD_DIR, storedName);
@@ -87,7 +96,7 @@ export function isRemoteStored(storedName: string) {
 export async function removeStoredFile(storedName: string) {
   if (isRemoteStored(storedName) && useBlobStorage()) {
     try {
-      await del(storedName, { token: process.env.BLOB_READ_WRITE_TOKEN });
+      await del(storedName, { ...blobAuthOptions() });
     } catch {
       /* ignore */
     }

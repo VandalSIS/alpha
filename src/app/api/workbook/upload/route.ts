@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error:
-          "File storage is not configured (missing BLOB_READ_WRITE_TOKEN). Add Vercel Blob in the project Storage tab.",
+          "File storage is not configured. Connect a Vercel Blob store to this project (Storage tab).",
       },
       { status: 503 }
     );

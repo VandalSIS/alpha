@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createReadStream, existsSync } from "fs";
 import { get } from "@vercel/blob";
 import { prisma } from "@/lib/db";
-import { uploadAbsolutePath, isRemoteStored, useBlobStorage } from "@/lib/uploads";
+import { uploadAbsolutePath, isRemoteStored, useBlobStorage, blobAuthOptions } from "@/lib/uploads";
 import { Readable } from "stream";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -25,7 +25,7 @@ export async function GET(req: Request, ctx: Ctx) {
   if (isRemoteStored(row.storedName) && useBlobStorage()) {
     const result = await get(row.storedName, {
       access: "private",
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      ...blobAuthOptions(),
     });
     if (!result || !result.stream) {
       return NextResponse.json({ error: "File missing in Blob" }, { status: 404 });
