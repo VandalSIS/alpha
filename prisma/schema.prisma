@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Local: sqlite (file:./dev.db). Production on Vercel: set DATABASE_URL to Postgres
+  // and change provider to "postgresql", then prisma db push.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum InviteStatus {
+  INVITED
+  STARTED
+  IN_PROGRESS
+  SUBMITTED
+  IN_REVIEW
+  COMPLETE
+}
+
+model Invitation {
+  id          String       @id @default(cuid())
+  name        String
+  email       String
+  code        String       @unique
+  status      InviteStatus @default(INVITED)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  invitedAt   DateTime     @default(now())
+  startedAt   DateTime?
+  submittedAt DateTime?
+
+  sessions    Session[]
+  submission  Submission?
+  magicLinks  MagicLink[]
+  files       UploadedFile[]
+}
+
+model Session {
+  id           String     @id @default(cuid())
+  token        String     @unique
+  invitationId String
+  invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  createdAt    DateTime   @default(now())
+}
+
+model MagicLink {
+  id           String     @id @default(cuid())
+  token        String     @unique
+  invitationId String
+  invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  /// "signin" (60 min, one-use) | "resume" (30 days, reusable until expiry)
+  purpose      String
+  expiresAt    DateTime
+  usedAt       DateTime?
+  createdAt    DateTime   @default(now())
+}
+
+model Submission {
+  id           String     @id @default(cuid())
+  invitationId String     @unique
+  invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  reference    String     @unique
+  answers      String // JSON string (SQLite)
+  step         Int        @default(0)
+  done         Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model UploadedFile {
+  id           String     @id @default(cuid())
+  invitationId String
+  invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  fieldId      String
+  originalName String
+  storedName   String
+  mimeType     String
+  size         Int
+  createdAt    DateTime   @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  meta      String? // JSON
+  createdAt DateTime @default(now())
+}
