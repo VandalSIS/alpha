@@ -31,9 +31,6 @@ export function AppNav({ active, variant = "internal" }: Props) {
             <Link href="/admin" className={active === "admin" ? "on" : undefined}>
               Admin
             </Link>
-            <Link href="/enter" className={active === "enter" ? "on" : undefined}>
-              Enter
-            </Link>
             <a href={SITE} target="_blank" rel="noopener noreferrer">
               Public page ↗
             </a>
