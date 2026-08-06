@@ -107,7 +107,7 @@ function EnterForm() {
 export default function EnterPage() {
   return (
     <>
-      <AppNav active="enter" />
+      <AppNav active="enter" variant="participant" />
       <main className="page">
         <Suspense fallback={<div className="shell">Loading…</div>}>
           <EnterForm />

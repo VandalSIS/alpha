@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AppNav } from "@/components/AppNav";
 import "./workbook.css";
 
 type Boot = {
@@ -91,33 +90,26 @@ export default function WorkbookPage() {
 
   if (error) {
     return (
-      <>
-        <AppNav active="workbook" />
-        <main className="page">
-          <div className="shell">
-            <p className="err">{error}</p>
-          </div>
-        </main>
-      </>
+      <main className="page">
+        <div className="shell">
+          <p className="err">{error}</p>
+        </div>
+      </main>
     );
   }
 
   if (!boot) {
     return (
-      <>
-        <AppNav active="workbook" />
-        <main className="page">
-          <div className="shell">
-            <p className="body">Loading workbook…</p>
-          </div>
-        </main>
-      </>
+      <main className="page">
+        <div className="shell">
+          <p className="body">Loading workbook…</p>
+        </div>
+      </main>
     );
   }
 
   return (
     <>
-      <AppNav active="workbook" />
       <div id="pw-root">
         <div className="pw-bar" role="banner">
           <div className="pw-bar-in">
