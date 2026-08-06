@@ -20,6 +20,7 @@ declare global {
     __PA_PARTICIPANT?: { name: string; email: string };
     __PA_ENGINE_LOADED?: boolean;
     __PA_RERENDER?: () => void;
+    __PA_DEV?: boolean;
   }
 }
 
@@ -48,6 +49,7 @@ export default function WorkbookPage() {
       delete clean.__files;
 
       window.__PA_PARTICIPANT = { name: data.name, email: data.email };
+      window.__PA_DEV = !!data.devTools;
       window.__PA_BOOTSTRAP = {
         step: data.done ? 10 : data.step || 0,
         data: clean,
@@ -75,7 +77,7 @@ export default function WorkbookPage() {
     }
 
     const s = document.createElement("script");
-    s.src = `/pa-workbook-engine.js?v=4`;
+    s.src = `/pa-workbook-engine.js?v=5`;
     s.async = false;
     s.onload = () => {
       window.__PA_ENGINE_LOADED = true;

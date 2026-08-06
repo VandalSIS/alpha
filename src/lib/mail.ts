@@ -28,7 +28,7 @@ function signatory() {
 }
 
 function questionsEmail() {
-  return process.env.EMAIL_QUESTIONS || "hello@christian-timbers.com";
+  return process.env.EMAIL_QUESTIONS || "projectalpha@christian-timbers.com";
 }
 
 function firstName(name: string) {
@@ -36,7 +36,7 @@ function firstName(name: string) {
 }
 
 export async function sendMail(mail: Mail): Promise<void> {
-  const from = process.env.EMAIL_FROM || "Project Alpha <hello@christian-timbers.com>";
+  const from = process.env.EMAIL_FROM || "Project Alpha <projectalpha@christian-timbers.com>";
   const override = process.env.EMAIL_OVERRIDE?.trim();
   const to = override || mail.to;
   const subject = override && override !== mail.to ? `[TEST → ${mail.to}] ${mail.subject}` : mail.subject;

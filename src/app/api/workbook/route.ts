@@ -46,6 +46,7 @@ export async function GET() {
     done: submission.done,
     reference: submission.reference,
     answers,
+    devTools: process.env.EMAIL_DEV_SHOW_LINK === "1",
   });
 }
 

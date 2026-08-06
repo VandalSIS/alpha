@@ -580,6 +580,9 @@ function renderField(f){
    Screens
    ============================================================ */
 function screenWelcome(){
+  var fill = window.__PA_DEV
+    ? '<p style="margin-top:16px"><button class="pw-btn pw-btn--ghost" type="button" id="pw-fill-test">Fill test answers (dev)</button></p>'
+    : '';
   return '<div class="pw-page">'
    + '<p class="pw-eyebrow">A Christian &amp; Timbers Initiative</p>'
    + '<h1 class="pw-h1">Board Aspiration and Readiness Workbook</h1>'
@@ -590,6 +593,7 @@ function screenWelcome(){
    + '<p style="margin-top:38px"><button class="pw-btn" type="button" id="pw-begin">'
    + (D.step > 0 ? 'Continue where you stopped' : 'Begin')
    + '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.4 12h15.2"/><path d="m13.8 6.4 5.8 5.6-5.8 5.6"/></svg></button></p>'
+   + fill
    + '</div>';
 }
 
@@ -827,6 +831,10 @@ view.addEventListener('click', function(e){
     if (!D.data.p_date) D.data.p_date = new Date().toISOString().slice(0,10);
     persist(); render(); return;
   }
+  if (b.id === 'pw-fill-test'){
+    fillTestAnswers();
+    return;
+  }
   if (b.dataset.edit){ D.step = parseInt(b.dataset.edit, 10); persist(); render(); return; }
   if (b.dataset.rm){
     var list = (D.files[b.dataset.rm] || []).slice();
@@ -861,6 +869,55 @@ function dependents(id){
     if ((f.showIf && f.showIf.f === id) || f.src === id) out.push(f);
   }); }); });
   return out;
+}
+
+/** Dev-only: fill every live field so you can jump to review/submit. */
+function fillTestAnswers(){
+  if (!window.__PA_DEV) return;
+  function fillOne(f){
+    if (!live(f)) return;
+    if (f.t === 'multi'){
+      var n = f.cap || 1;
+      D.data[f.id] = (f.o || []).slice(0, n);
+      if (f.other && D.data[f.id].indexOf('Other') > -1) D.data[f.id + '_other'] = 'Test other';
+    } else if (f.t === 'one'){
+      D.data[f.id] = (f.o && f.o[0]) || 'Yes';
+    } else if (f.t === 'scale'){
+      D.data[f.id] = '3';
+    } else if (f.t === 'ack' || f.t === 'opt'){
+      D.data[f.id] = true;
+    } else if (f.t === 'file'){
+      if (!(D.files[f.id] || []).length){
+        D.files[f.id] = [{ id: null, name: 'TEST-' + f.id + '.pdf' }];
+      }
+    } else if (f.t === 'perSel'){
+      arr(f.src).forEach(function(o){
+        D.data[f.id + '::' + o] = 'Test note for ' + o;
+      });
+    } else if (f.t === 'email'){
+      D.data[f.id] = participant.email || 'test@example.com';
+    } else if (f.t === 'date'){
+      D.data[f.id] = new Date().toISOString().slice(0, 10);
+    } else if (f.t === 'url'){
+      D.data[f.id] = 'https://example.com';
+    } else if (f.t === 'tel'){
+      D.data[f.id] = '+1 415 000 0000';
+    } else {
+      D.data[f.id] = 'Test answer (' + f.id + ').';
+    }
+  }
+  // Two passes: parents first, then showIf / perSel dependents
+  [0, 1].forEach(function(){
+    PA_STEPS.forEach(function(s){
+      if (s.review) return;
+      s.groups.forEach(function(g){ g.f.forEach(fillOne); });
+    });
+  });
+  if (participant.name) D.data.p_name = participant.name;
+  if (participant.email) D.data.p_email = participant.email;
+  D.step = 10;
+  persist();
+  render();
 }
 
 /* ============================================================

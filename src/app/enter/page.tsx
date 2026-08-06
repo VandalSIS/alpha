@@ -98,7 +98,7 @@ function EnterForm() {
         ) : null}
         <p className="body" style={{ marginTop: 22, fontSize: 14 }}>
           Mislaid your code? Write to{" "}
-          <a href="mailto:hello@christian-timbers.com">hello@christian-timbers.com</a>.
+          <a href="mailto:projectalpha@christian-timbers.com">projectalpha@christian-timbers.com</a>.
         </p>
       </form>
     </div>

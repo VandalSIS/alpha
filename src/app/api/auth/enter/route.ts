@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error:
-            "We could not match that code and email address. Check both and try again, or write to hello@christian-timbers.com.",
+            "We could not match that code and email address. Check both and try again, or write to projectalpha@christian-timbers.com.",
         },
         { status: 404 }
       );
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error:
-            "This invitation has expired (valid for 30 days). Write to hello@christian-timbers.com for a new code.",
+            "This invitation has expired (valid for 30 days). Write to projectalpha@christian-timbers.com for a new code.",
         },
         { status: 410 }
       );
