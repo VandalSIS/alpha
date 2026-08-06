@@ -115,9 +115,15 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setErr(data.error?.toString?.() || data.error || "Could not create invite.");
+        const raw =
+          typeof data.error === "string"
+            ? data.error
+            : data.error
+              ? JSON.stringify(data.error)
+              : `Could not create invite (${res.status}).`;
+        setErr(raw);
         return;
       }
       if (data.emailSent === false) {
