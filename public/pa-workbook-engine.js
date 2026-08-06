@@ -696,6 +696,8 @@ function render(opts){
 
   paintProgress();
   if (D.step > 0 && !D.done) refreshCounters();
+  var fillNav = el('pw-fill-test-nav');
+  if (fillNav) fillNav.hidden = !(window.__PA_DEV && D.step > 0 && !D.done);
   if (keepScroll) {
     window.scrollTo(0, y);
     requestAnimationFrame(function(){ window.scrollTo(0, y); });
@@ -831,7 +833,7 @@ view.addEventListener('click', function(e){
     if (!D.data.p_date) D.data.p_date = new Date().toISOString().slice(0,10);
     persist(); render(); return;
   }
-  if (b.id === 'pw-fill-test'){
+  if (b.id === 'pw-fill-test' || b.id === 'pw-fill-test-nav'){
     fillTestAnswers();
     return;
   }
@@ -1002,6 +1004,11 @@ el('pw-next').addEventListener('click', function(){
 });
 
 el('pw-back').addEventListener('click', function(){ if (D.step > 1){ D.step--; persist(); render(); } });
+
+var fillNavBtn = el('pw-fill-test-nav');
+if (fillNavBtn){
+  fillNavBtn.addEventListener('click', function(){ fillTestAnswers(); });
+}
 
 el('pw-later').addEventListener('click', function(){
   persist();
