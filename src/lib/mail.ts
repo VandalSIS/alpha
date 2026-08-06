@@ -16,10 +16,11 @@ function appUrl(path = "") {
 }
 
 function publicEntryUrl() {
-  return (
+  const raw =
     process.env.NEXT_PUBLIC_ENTRY_URL ||
-    "https://www.christianandtimbers.com/apply-for-ai-board-opportunities"
-  );
+    "https://www.christianandtimbers.com/apply-for-ai-board-opportunities";
+  // Always bare landing URL — strip #enter / trailing slash from env mistakes
+  return raw.replace(/#.*$/, "").replace(/\/$/, "");
 }
 
 function workbookEnterUrl() {

@@ -19,7 +19,6 @@ declare global {
     __PA_PARTICIPANT?: { name: string; email: string };
     __PA_ENGINE_LOADED?: boolean;
     __PA_RERENDER?: () => void;
-    __PA_DEV?: boolean;
   }
 }
 
@@ -48,10 +47,6 @@ export default function WorkbookPage() {
       delete clean.__files;
 
       window.__PA_PARTICIPANT = { name: data.name, email: data.email };
-      const urlDev =
-        typeof window !== "undefined" &&
-        new URLSearchParams(window.location.search).get("dev") === "1";
-      window.__PA_DEV = !!data.devTools || urlDev;
       window.__PA_BOOTSTRAP = {
         step: data.done ? 10 : data.step || 0,
         data: clean,
@@ -79,7 +74,7 @@ export default function WorkbookPage() {
     }
 
     const s = document.createElement("script");
-    s.src = `/pa-workbook-engine.js?v=8`;
+    s.src = `/pa-workbook-engine.js?v=9`;
     s.async = false;
     s.onload = () => {
       window.__PA_ENGINE_LOADED = true;
@@ -133,14 +128,6 @@ export default function WorkbookPage() {
             </button>
             <button className="pw-btn pw-btn--link" id="pw-later" type="button">
               Save and continue later
-            </button>
-            <button
-              className="pw-btn pw-btn--link"
-              id="pw-fill-test-nav"
-              type="button"
-              hidden
-            >
-              Fill test answers
             </button>
             <span className="pw-spacer"></span>
             <button className="pw-btn" id="pw-next" type="button">

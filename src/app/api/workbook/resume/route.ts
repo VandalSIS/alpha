@@ -25,9 +25,6 @@ export async function POST() {
       ok: true,
       message: "Your answers are saved. We have emailed a link that returns you to this step.",
     };
-    if (!process.env.RESEND_API_KEY || process.env.EMAIL_DEV_SHOW_LINK === "1") {
-      payload.devLink = link.url;
-    }
     return NextResponse.json(payload);
   } catch (e) {
     console.error(e);
