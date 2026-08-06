@@ -3,9 +3,7 @@ generator client {
 }
 
 datasource db {
-  // Local: sqlite (file:./dev.db). Production on Vercel: set DATABASE_URL to Postgres
-  // and change provider to "postgresql", then prisma db push.
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
