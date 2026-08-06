@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { removeStoredFile } from "@/lib/uploads";
 
 const authSchema = z.object({
   password: z.string().min(1),
@@ -77,9 +78,14 @@ export async function DELETE(req: Request, ctx: Ctx) {
     const body = authSchema.parse(await req.json());
     if (body.password !== process.env.ADMIN_PASSWORD) return unauthorized();
 
+    const files = await prisma.uploadedFile.findMany({ where: { invitationId: id } });
+    for (const f of files) {
+      await removeStoredFile(f.storedName);
+    }
+
     await prisma.invitation.delete({ where: { id } });
     await prisma.auditLog.create({
-      data: { action: "invite.deleted", meta: JSON.stringify({ id }) },
+      data: { action: "invite.deleted", meta: JSON.stringify({ id, filesRemoved: files.length }) },
     });
     return NextResponse.json({ ok: true });
   } catch (e) {
