@@ -41,16 +41,30 @@ export async function POST(req: Request) {
       data: { name: data.name.trim(), email, code },
     });
 
-    await sendInviteEmail({
-      name: invite.name,
-      email: invite.email,
-      code: invite.code,
-    });
+    let emailSent = true;
+    let emailError: string | null = null;
+    try {
+      await sendInviteEmail({
+        name: invite.name,
+        email: invite.email,
+        code: invite.code,
+      });
+    } catch (mailErr) {
+      emailSent = false;
+      emailError = mailErr instanceof Error ? mailErr.message : "Email send failed";
+      console.error("Invite email failed:", mailErr);
+    }
 
     await prisma.auditLog.create({
       data: {
         action: "invite.created",
-        meta: JSON.stringify({ id: invite.id, email: invite.email, code: invite.code }),
+        meta: JSON.stringify({
+          id: invite.id,
+          email: invite.email,
+          code: invite.code,
+          emailSent,
+          emailError,
+        }),
       },
     });
 
@@ -60,13 +74,16 @@ export async function POST(req: Request) {
       email: invite.email,
       code: invite.code,
       status: invite.status,
+      emailSent,
+      emailError,
     });
   } catch (e) {
     if (e instanceof z.ZodError) {
       return NextResponse.json({ error: e.flatten() }, { status: 400 });
     }
     console.error(e);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    const message = e instanceof Error ? e.message : "Server error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 

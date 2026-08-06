@@ -120,7 +120,14 @@ export default function AdminPage() {
         setErr(data.error?.toString?.() || data.error || "Could not create invite.");
         return;
       }
-      setMsg(`Invite created. Code: ${data.code}. Email sent (or logged in console).`);
+      if (data.emailSent === false) {
+        setMsg(
+          `Invite created. Code: ${data.code}. Email FAILED: ${data.emailError || "unknown error"}`
+        );
+        setErr(data.emailError || "Email failed — invite still created.");
+      } else {
+        setMsg(`Invite created. Code: ${data.code}. Invitation email sent.`);
+      }
       setName("");
       setEmail("");
       await load(password);
