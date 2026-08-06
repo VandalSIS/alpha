@@ -1,49 +1,41 @@
 "use client";
 
-import { FormEvent, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { FormEvent, useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AppNav } from "@/components/AppNav";
 
 const ERRORS: Record<string, string> = {
-  missing: "That sign-in link is incomplete. Request a new one below.",
-  invalid: "That sign-in link is not valid. Request a new one below.",
-  expired: "That sign-in link has expired. Request a new one below.",
-  used: "That sign-in link has already been used. Request a new one below.",
+  missing: "That resume link is incomplete. Enter your code below.",
+  invalid: "That resume link is not valid. Enter your code below.",
+  expired: "That resume link has expired. Enter your code below.",
+  used: "That sign-in link was already used. Enter your code below to open the workbook again.",
 };
 
 function EnterForm() {
+  const router = useRouter();
   const search = useSearchParams();
   const linkError = ERRORS[search.get("error") || ""] || "";
 
-  const [code, setCode] = useState("");
-  const [email, setEmail] = useState("");
+  const [code, setCode] = useState(search.get("code") || "");
+  const [email, setEmail] = useState(search.get("email") || "");
   const [error, setError] = useState(linkError);
-  const [msg, setMsg] = useState("");
-  const [devLink, setDevLink] = useState("");
   const [busy, setBusy] = useState(false);
 
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function openWorkbook(nextCode: string, nextEmail: string) {
     setError("");
-    setMsg("");
-    setDevLink("");
     setBusy(true);
     try {
       const res = await fetch("/api/auth/enter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, email }),
+        body: JSON.stringify({ code: nextCode, email: nextEmail }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Could not send the sign-in link.");
+        setError(data.error || "Could not open the workbook.");
         return;
       }
-      setMsg(
-        data.message ||
-          "We have sent a secure sign-in link to that email address. It works once and expires in 60 minutes."
-      );
-      if (data.devLink) setDevLink(data.devLink);
+      router.push(data.redirect || "/workbook");
     } catch {
       setError("Something went wrong. Try again.");
     } finally {
@@ -51,13 +43,27 @@ function EnterForm() {
     }
   }
 
+  useEffect(() => {
+    const qCode = search.get("code");
+    const qEmail = search.get("email");
+    if (qCode && qEmail && !linkError) {
+      void openWorkbook(qCode, qEmail);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    await openWorkbook(code, email);
+  }
+
   return (
     <div className="shell" style={{ maxWidth: 560 }}>
-      <p className="kicker">Project Alpha · test entry</p>
+      <p className="kicker">Project Alpha · entry</p>
       <h1 className="h1">Enter the workbook</h1>
       <p className="body" style={{ marginTop: 16 }}>
         Project Alpha is by invitation. Enter the code from your invitation and the address it was
-        sent to. We will email you a secure sign-in link.
+        sent to. You can return with the same code whenever you need.
       </p>
 
       <form onSubmit={onSubmit} style={{ marginTop: 28 }}>
@@ -86,16 +92,9 @@ function EnterForm() {
           />
         </div>
         <button className="btn" type="submit" disabled={busy}>
-          {busy ? "Sending…" : "Send my sign-in link"}
+          {busy ? "Opening…" : "Open workbook"}
         </button>
         {error ? <p className="err">{error}</p> : null}
-        {msg ? <p className="ok">{msg}</p> : null}
-        {devLink ? (
-          <p className="ok" style={{ marginTop: 12 }}>
-            <strong>Dev link (no Resend key yet):</strong>{" "}
-            <a href={devLink}>{devLink}</a>
-          </p>
-        ) : null}
         <p className="body" style={{ marginTop: 22, fontSize: 14 }}>
           Mislaid your code? Write to{" "}
           <a href="mailto:projectalpha@christian-timbers.com">projectalpha@christian-timbers.com</a>.
