@@ -970,6 +970,9 @@ el('pw-later').addEventListener('click', function(){
       b.textContent = (r.j && r.j.message)
         ? r.j.message
         : 'Your answers are saved. We have emailed a link that returns you to this step. The link works for 30 days.';
+      if (r.j && r.j.devLink){
+        console.log('Resume link (dev):', r.j.devLink);
+      }
     } else {
       b.textContent = 'Saved locally, but the email failed. Try again later.';
     }
