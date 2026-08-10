@@ -99,10 +99,10 @@ var PA_STEPS = [
 
 /* ---------- STEP 4 — section 6 ---------- */
 {n:4, title:"Governance-relevant accomplishments",
- intro:"Three accomplishments that support your board candidacy. Choose examples with a decision you owned, a stakeholder set, and a measurable result.",
+ intro:"At least one accomplishment that supports your board candidacy. Choose an example with a decision you owned, a stakeholder set, and a measurable result. Additional examples are optional.",
  groups:[
  {h:"6. Governance-Relevant Accomplishments",
-  note:"Please provide three accomplishments that most strongly support your board candidacy. Select examples that demonstrate enterprise judgment, strategic contribution, leadership through complexity, or experience relevant to board oversight.", f:[]},
+  note:"Please provide at least one accomplishment that strongly supports your board candidacy. Additional examples are welcome. Select examples that demonstrate enterprise judgment, strategic contribution, leadership through complexity, or experience relevant to board oversight.", f:[]},
  {h:"", sub:"Accomplishment 1", f:[
   {id:"a1_org",  t:"long", q:"Organization and context", r:1, lim:1200},
   {id:"a1_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", r:1, lim:1200},
@@ -114,28 +114,28 @@ var PA_STEPS = [
   {id:"a1_rel",  t:"long", q:"Why this accomplishment is relevant to board service", r:1, lim:1200}
  ]},
  {h:"", sub:"Accomplishment 2", f:[
-  {id:"a2_org",  t:"long", q:"Organization and context", r:1, lim:1200},
-  {id:"a2_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", r:1, lim:1200},
-  {id:"a2_resp", t:"long", q:"Your specific responsibility", r:1, lim:1200},
-  {id:"a2_dec",  t:"long", q:"Important decisions you made or influenced", r:1, lim:1200},
-  {id:"a2_stak", t:"long", q:"Stakeholders involved", r:1, lim:1200},
-  {id:"a2_out",  t:"long", q:"Outcome achieved", r:1, lim:1200},
-  {id:"a2_meas", t:"long", q:"Measurable result", r:1, lim:1200},
-  {id:"a2_rel",  t:"long", q:"Why this accomplishment is relevant to board service", r:1, lim:1200}
+  {id:"a2_org",  t:"long", q:"Organization and context", lim:1200},
+  {id:"a2_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", lim:1200},
+  {id:"a2_resp", t:"long", q:"Your specific responsibility", lim:1200},
+  {id:"a2_dec",  t:"long", q:"Important decisions you made or influenced", lim:1200},
+  {id:"a2_stak", t:"long", q:"Stakeholders involved", lim:1200},
+  {id:"a2_out",  t:"long", q:"Outcome achieved", lim:1200},
+  {id:"a2_meas", t:"long", q:"Measurable result", lim:1200},
+  {id:"a2_rel",  t:"long", q:"Why this accomplishment is relevant to board service", lim:1200}
  ]},
  {h:"", sub:"Accomplishment 3", f:[
-  {id:"a3_org",  t:"long", q:"Organization and context", r:1, lim:1200},
-  {id:"a3_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", r:1, lim:1200},
-  {id:"a3_resp", t:"long", q:"Your specific responsibility", r:1, lim:1200},
-  {id:"a3_dec",  t:"long", q:"Important decisions you made or influenced", r:1, lim:1200},
-  {id:"a3_stak", t:"long", q:"Stakeholders involved", r:1, lim:1200},
-  {id:"a3_out",  t:"long", q:"Outcome achieved", r:1, lim:1200},
-  {id:"a3_meas", t:"long", q:"Measurable result", r:1, lim:1200},
-  {id:"a3_rel",  t:"long", q:"Why this accomplishment is relevant to board service", r:1, lim:1200}
+  {id:"a3_org",  t:"long", q:"Organization and context", lim:1200},
+  {id:"a3_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", lim:1200},
+  {id:"a3_resp", t:"long", q:"Your specific responsibility", lim:1200},
+  {id:"a3_dec",  t:"long", q:"Important decisions you made or influenced", lim:1200},
+  {id:"a3_stak", t:"long", q:"Stakeholders involved", lim:1200},
+  {id:"a3_out",  t:"long", q:"Outcome achieved", lim:1200},
+  {id:"a3_meas", t:"long", q:"Measurable result", lim:1200},
+  {id:"a3_rel",  t:"long", q:"Why this accomplishment is relevant to board service", lim:1200}
  ]},
  {h:"", f:[
-  {id:"a_diff",  t:"long", q:"Which of these accomplishments is most differentiated in the board market? Why?", r:1, lim:1200},
-  {id:"a_ent",   t:"long", q:"Which accomplishment best demonstrates enterprise-level judgment? Why?", r:1, lim:1200}
+  {id:"a_diff",  t:"long", q:"Which of these accomplishments is most differentiated in the board market? Why?", lim:1200},
+  {id:"a_ent",   t:"long", q:"Which accomplishment best demonstrates enterprise-level judgment? Why?", lim:1200}
  ]}]},
 /* ---------- STEP 5 — sections 7, 8, 9, 10 ---------- */
 {n:5, title:"Capabilities, industries, strategic situations",
