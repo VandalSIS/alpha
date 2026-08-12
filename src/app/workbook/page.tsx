@@ -47,8 +47,9 @@ export default function WorkbookPage() {
       delete clean.__files;
 
       window.__PA_PARTICIPANT = { name: data.name, email: data.email };
+      const step = Math.min(Math.max(0, Number(data.step) || 0), 5);
       window.__PA_BOOTSTRAP = {
-        step: data.done ? 10 : data.step || 0,
+        step: data.done ? 5 : step,
         data: clean,
         files,
         done: !!data.done,
@@ -74,7 +75,7 @@ export default function WorkbookPage() {
     }
 
     const s = document.createElement("script");
-    s.src = `/pa-workbook-engine.js?v=10`;
+    s.src = `/pa-workbook-engine.js?v=11`;
     s.async = false;
     s.onload = () => {
       window.__PA_ENGINE_LOADED = true;

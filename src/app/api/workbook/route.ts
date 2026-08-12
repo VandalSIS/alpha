@@ -50,7 +50,7 @@ export async function GET() {
 }
 
 const saveSchema = z.object({
-  step: z.number().int().min(0).max(10),
+  step: z.number().int().min(0).max(5),
   answers: z.record(z.any()),
   done: z.boolean().optional(),
 });

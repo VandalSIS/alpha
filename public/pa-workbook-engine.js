@@ -9,372 +9,149 @@
    ============================================================ */
 var PA_STEPS = [
 
-/* ---------- STEP 1 — section 1 ---------- */
-{n:1, title:"Participant profile",
- intro:"Start with the scope of your executive career. Scale carries more weight than title, so state revenue, budget, team size, and geography where relevant.",
- groups:[{h:"1. Participant Profile", f:[
-  {id:"p_name",  t:"text",  q:"Full name", r:1},
-  {id:"p_title", t:"text",  q:"Current title", r:1},
-  {id:"p_org",   t:"text",  q:"Current organization", r:1},
-  {id:"p_loc",   t:"text",  q:"Primary location", r:1},
-  {id:"p_email", t:"email", q:"Email address", r:1},
-  {id:"p_tel",   t:"tel",   q:"Telephone number", r:1},
-  {id:"p_li",    t:"url",   q:"LinkedIn profile"},
-  {id:"p_date",  t:"date",  q:"Date completed", r:1},
-  {id:"p_role",  t:"long",  q:"Current or most significant executive role", r:1, lim:1200},
-  {id:"p_years", t:"text",  q:"Years of executive leadership experience", r:1},
-  {id:"p_pl",    t:"long",  q:"Largest P&L, revenue base, operating budget, or capital responsibility",
-   help:"Please indicate the approximate scale and whether your responsibility was direct or shared.", r:1, lim:1200},
-  {id:"p_team",  t:"long",  q:"Largest team or organization led",
-   help:"Please include direct and indirect employees where relevant.", r:1, lim:1200},
-  {id:"p_ind",   t:"long",  q:"Primary industries and markets", r:1, lim:1200},
-  {id:"p_geo",   t:"multi", q:"Geographic scope of leadership experience", help:"Select all that apply:", r:1,
-   o:["Local","National","North American","European","Asia-Pacific","Middle Eastern","Latin American","Global","Other"], other:1},
-  {id:"p_own",   t:"multi", q:"Ownership environments experienced", help:"Select all that apply:", r:1,
-   o:["Public company","Privately held company","Private equity portfolio company","Venture-backed company","Founder-led company","Family-owned company","Government or public-sector organization","Nonprofit or mission-driven organization","Other"], other:1},
-  {id:"p_boards",t:"long",  q:"Current board, advisory, trustee, or governance committee roles",
-   help:"Please include the organization, role, appointment date, and whether the position is fiduciary or advisory.", lim:2500},
-  {id:"p_edu",   t:"long",  q:"Education, professional credentials, and governance qualifications", r:1, lim:2500}
- ]}]},
-
-/* ---------- STEP 2 — sections 2, 3 ---------- */
-{n:2, title:"Motivation and five-year board journey",
- intro:"Why board service, why now, and where the next five years should lead.",
+/* ---------- STEP 1 — Participant and Aspiration Foundations ---------- */
+{n:1, title:"Participant and aspiration foundations",
+ intro:"Start with who you are and why board service matters now.",
  groups:[
- {h:"2. Board Motivation and Aspirations", f:[
+ {h:"Participant", f:[
+  {id:"p_name",  t:"text",  q:"Participant", r:1},
+  {id:"p_title", t:"text",  q:"Current Role", r:1},
+  {id:"p_org",   t:"text",  q:"Organization", r:1},
+  {id:"p_date",  t:"date",  q:"Date", r:1}
+ ]},
+ {h:"Aspiration Foundations", f:[
+  {id:"m_value", t:"long", q:"What would make this process valuable for you?", r:1, lim:2500},
   {id:"m_why",   t:"long", q:"Why are you considering board service at this stage of your career?", r:1, lim:2500},
-  {id:"m_value", t:"long", q:"What would make your participation in Project Alpha valuable?", r:1, lim:1200},
-  {id:"m_contr", t:"long", q:"What would you most like to contribute through board service?", r:1, lim:1200},
-  {id:"m_learn", t:"long", q:"What would you most like to learn, experience, or develop through board service?", r:1, lim:1200},
-  {id:"m_prio",  t:"one",  q:"How important is securing a board appointment within the next 24 months?", help:"Select one:", r:1,
-   o:["Exploratory interest","Meaningful objective","High priority","Immediate priority"]},
-  {id:"m_prompt",t:"multi",q:"What has prompted your interest in board service now?", help:"Select all that apply:", r:1,
-   o:["Desire to contribute beyond my executive responsibilities","Preparation for a future executive transition","Development of a portfolio career","Interest in governance and enterprise stewardship","Desire to support a CEO or management team","Interest in a particular industry or mission","Desire to broaden my professional perspective","Interest in public-company governance","Interest in private equity or venture-backed companies","Interest in nonprofit or community service","Other"], other:1},
-  {id:"m_conc",  t:"long", q:"What concerns, questions, or uncertainties do you currently have about pursuing board service?", lim:2500}
- ]},
- {h:"3. Five-Year Board Journey", f:[
-  {id:"j_look",  t:"multi",q:"What would a successful board journey look like over the next five years?", help:"Select all that apply:", r:1,
-   o:["One meaningful board role","A portfolio of board roles","Public-company board service","Private-company board service","Private equity portfolio board service","Venture-backed or growth-company board service","Committee membership","Committee leadership","Board chair or lead director responsibility","International board experience","Advisory board service","Nonprofit or mission-driven board service","Government or public-sector board service","Other"], other:1},
-  {id:"j_desc",  t:"long", q:"Describe your desired five-year board journey.",
-   help:"Consider the types of organizations, responsibilities, experiences, and contributions you would like your portfolio to include.", r:1, lim:2500},
-  {id:"j_known", t:"long", q:"What contribution would you want to be known for across your board career?", r:1, lim:1200},
-  {id:"j_orgs",  t:"long", q:"Are there specific organizations, sectors, communities, or causes you would be proud to support?", lim:1200},
-  {id:"j_role",  t:"long", q:"What role do you expect board service to play in your broader career and life?", r:1, lim:1200}
+  {id:"m_contr", t:"long", q:"What would you most like to contribute through board service?", r:1, lim:2500},
+  {id:"m_learn", t:"long", q:"What would you most like to learn, experience, or develop?", r:1, lim:2500}
  ]}]},
 
-/* ---------- STEP 3 — sections 4, 5 ---------- */
-{n:3, title:"Board experience and governance judgment",
- intro:"Your formal board roles, your exposure to boards as an executive, and the judgment you have shown in the room.",
+/* ---------- STEP 2 — Journey, environments, industry & contribution ---------- */
+{n:2, title:"Board journey, environments, and contribution",
+ intro:"Where the next five years should lead, and the environments in which you can create value.",
  groups:[
- {h:"4. Existing Board and Governance Experience", sub:"Formal Board Experience", f:[
-  {id:"b_roles", t:"long", q:"What formal board, advisory board, trustee, observer, or governance committee roles have you held?",
-   help:"For each role, please provide: Organization; Role; Ownership environment; Appointment dates; Fiduciary or advisory status; Committees served; Primary responsibilities; Most significant contribution.", lim:2500}
+ {h:"Five-Year Board Journey and Target Environments", f:[
+  {id:"j_look", t:"multi", q:"What would a successful board journey look like over the next five years?", help:"Select all that apply:", r:1,
+   o:["One meaningful board role","A portfolio of board roles","Committee leadership","Board chair or lead director","Mission-driven service","International board experience","Public company board","Advisory or interim board service"]},
+  {id:"j_desc", t:"long", q:"Additional details on successful board journey (five years)", lim:2500},
+  {id:"o_env",  t:"multi", q:"Which environments interest you most?", help:"Select all that apply:", r:1,
+   o:["Public company","Private equity portfolio company","Venture-backed or growth company","Founder-led or family-owned company","Advisory board","Nonprofit or mission-driven organization","Government or public sector","Board-level turnaround or transformation"]},
+  {id:"o_env_other", t:"text", q:"Other board environment (please specify)"},
+  {id:"o_stage",t:"multi", q:"Which company stages are the strongest fit?", help:"Select all that apply:", r:1,
+   o:["Early stage","Scale-up","Mid-market","Large enterprise","Pre-transaction","Post-transaction"]},
+  {id:"o_two",  t:"long", q:"Which two board environments are the strongest fit for you, and why?", r:1, lim:2500}
  ]},
- {h:"", sub:"Executive Exposure to Boards", f:[
-  {id:"b_freq",  t:"one",  q:"How frequently have you worked directly with or presented to a board?", r:1,
-   o:["Never","Occasionally","Quarterly","Monthly","More frequently than monthly"]},
-  {id:"b_cap",   t:"multi",q:"In what capacity have you worked with boards?", help:"Select all that apply:", r:1,
-   o:["CEO or enterprise leader","Business unit or P&L leader","Functional executive","Management presenter","Transaction or integration leader","Board secretary or governance support","Adviser or consultant","Investor representative","Other"], other:1,
-   showIf:{f:"b_freq", not:["Never"]}},
-  {id:"b_matt",  t:"multi",q:"Which matters have you presented to or discussed with boards?", help:"Select all that apply:",
-   o:["Enterprise strategy","Annual operating plan","Financial performance","Capital allocation","Mergers and acquisitions","Post-merger integration","Enterprise risk","Regulatory or compliance matters","Cybersecurity or technology risk","Transformation","CEO succession","Executive succession","Talent and compensation","Crisis response","Investor relations","Stakeholder matters","International expansion","Major customer or commercial matters","Restructuring or turnaround","Other"], other:1,
-   showIf:{f:"b_freq", not:["Never"]}},
-  {id:"b_sig",   t:"long", q:"Describe the most significant matter you have brought before a board.",
-   help:"Please address: The context; The decision required; Your recommendation; The board's response; The outcome; What the experience taught you.", lim:2500,
-   showIf:{f:"b_freq", not:["Never"]}},
-  {id:"b_learn", t:"long", q:"What have you learned from observing effective or ineffective boards?", r:1, lim:2500}
- ]},
- {h:"5. Governance Judgment and Boardroom Contribution", f:[
-  {id:"g_chal",  t:"long", q:"Describe a situation in which you constructively challenged a CEO, board, investor, or senior stakeholder.",
-   help:"What was at stake, how did you approach the situation, and what was the result?", r:1, lim:2500},
-  {id:"g_change",t:"long", q:"Describe a situation in which you changed your recommendation after hearing contrary evidence or perspectives.", r:1, lim:2500},
-  {id:"g_bal",   t:"long", q:"Describe an occasion when you had to balance short-term performance with the long-term interests of an organization.", r:1, lim:2500},
-  {id:"g_diff",  t:"long", q:"How would your contribution as a director differ from your contribution as an executive?", r:1, lim:1200},
-  {id:"g_undmin",t:"long", q:"How would you challenge management without undermining the CEO or management team?", r:1, lim:1200},
-  {id:"g_infl",  t:"long", q:"How do you influence decisions when you do not have direct authority?", r:1, lim:1200},
-  {id:"g_when",  t:"long", q:"How do you determine when to ask questions, provide advice, or allow management to execute?", r:1, lim:1200},
-  {id:"g_sep",   t:"long", q:"What experience do you have separating governance oversight from management execution?", r:1, lim:1200},
-  {id:"g_adj",   t:"long", q:"What aspects of board service may require the greatest adjustment from you?", r:1, lim:1200}
+ {h:"Industry, Geography, and Board Contribution Scope", f:[
+  {id:"i_cred", t:"long", q:"Which industries or adjacent sectors give you immediate credibility?", r:1, lim:2500},
+  {id:"o_geo",  t:"long", q:"What geographic scope would you be comfortable supporting?", r:1, lim:1200},
+  {id:"c_areas",t:"multi", q:"Select the areas that best reflect your experience (board contribution)", help:"Select all that apply:", r:1,
+   o:["CEO and enterprise leadership","P&L and operational performance","Growth and commercialization","Strategy and transformation","Technology, AI, or cybersecurity","Finance and capital allocation","Mergers, acquisitions, and integration","Risk, governance, and compliance","People, culture, and talent","International expansion","Sustainability and ESG","Stakeholder and reputation management","Other"], other:1},
+  {id:"c_core", t:"long", q:"Which two or three areas form the core of your board proposition?", r:1, lim:2500},
+  {id:"t_enh",  t:"long", q:"What is the single greatest enhancement you could bring to a board?", r:1, lim:2500}
  ]}]},
 
-/* ---------- STEP 4 — section 6 ---------- */
-{n:4, title:"Governance-relevant accomplishments",
- intro:"At least one accomplishment that supports your board candidacy. Choose an example with a decision you owned, a stakeholder set, and a measurable result. Additional examples are optional.",
+/* ---------- STEP 3 — Capabilities, governance examples, director profile ---------- */
+{n:3, title:"Capabilities and governance experience",
+ intro:"Map your capability depth, then give two governance-relevant examples and your director profile.",
  groups:[
- {h:"6. Governance-Relevant Accomplishments",
-  note:"Please provide at least one accomplishment that strongly supports your board candidacy. Additional examples are welcome. Select examples that demonstrate enterprise judgment, strategic contribution, leadership through complexity, or experience relevant to board oversight.", f:[]},
- {h:"", sub:"Accomplishment 1", f:[
-  {id:"a1_org",  t:"long", q:"Organization and context", r:1, lim:1200},
-  {id:"a1_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", r:1, lim:1200},
-  {id:"a1_resp", t:"long", q:"Your specific responsibility", r:1, lim:1200},
-  {id:"a1_dec",  t:"long", q:"Important decisions you made or influenced", r:1, lim:1200},
-  {id:"a1_stak", t:"long", q:"Stakeholders involved", r:1, lim:1200},
-  {id:"a1_out",  t:"long", q:"Outcome achieved", r:1, lim:1200},
-  {id:"a1_meas", t:"long", q:"Measurable result", r:1, lim:1200},
-  {id:"a1_rel",  t:"long", q:"Why this accomplishment is relevant to board service", r:1, lim:1200}
+ {h:"Capability Matrices", f:[
+  {id:"cap_ent", t:"multi", q:"Enterprise capability selections", help:"Select all that apply:",
+   o:["Strategic planning","Corporate transformation","M&A and integration","Capital allocation","Risk management","Stakeholder management","Investor relations","Board leadership","Succession planning","Crisis management","ESG and sustainability","International expansion","Commercial strategy","Revenue growth","Go-to-market strategy","Business development","Customer retention","Pricing strategy","Partnerships and alliances","Market entry","Sector regulation","Public policy","Competitive intelligence","P&L ownership","Product commercialization","Other"], other:1},
+  {id:"cap_com", t:"multi", q:"Commercial capability selections", help:"Select all that apply:",
+   o:["Sales leadership","Enterprise sales","Key account management","Channel strategy","Marketing strategy","Brand management","Customer experience","Market research","Demand generation","Negotiation","Contracting","Commercial operations","Revenue operations","Partnership development","Pricing and packaging","Business planning","Go-to-market execution","Pipeline management","Sales enablement","Product positioning","Client advisory","Other"], other:1},
+  {id:"cap_sec", t:"multi", q:"Sector capability selections", help:"Select all that apply:",
+   o:["Financial services","Technology","Healthcare","Energy and utilities","Consumer and retail","Industrial and manufacturing","Telecommunications","Professional services","Media and entertainment","Education","Real estate","Transportation and logistics","Life sciences","Government and public sector","Nonprofit and social impact","Private equity and venture capital","SaaS and software","Cybersecurity","AI and data analytics","Sustainability and climate","Other"], other:1},
+  {id:"cap_tech",t:"multi", q:"Technology capability selections", help:"Select all that apply:",
+   o:["Digital transformation","Enterprise architecture","Data strategy","Artificial intelligence","Cybersecurity","Cloud platforms","Software product management","IT governance","Automation and process digitization","Technology risk management","Systems integration","Privacy and data protection","Emerging technologies","Technology due diligence","Architecture modernization","Other"], other:1},
+  {id:"cap_ops", t:"multi", q:"Operations capability selections", help:"Select all that apply:",
+   o:["Operational excellence","Supply chain management","Procurement","Manufacturing operations","Service delivery","Process improvement","Quality management","Program management","Change management","Workforce planning","Performance management","Budget management","Business continuity","Operational risk","Vendor management","Other"], other:1}
  ]},
- {h:"", sub:"Accomplishment 2", f:[
-  {id:"a2_org",  t:"long", q:"Organization and context", lim:1200},
-  {id:"a2_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", lim:1200},
-  {id:"a2_resp", t:"long", q:"Your specific responsibility", lim:1200},
-  {id:"a2_dec",  t:"long", q:"Important decisions you made or influenced", lim:1200},
-  {id:"a2_stak", t:"long", q:"Stakeholders involved", lim:1200},
-  {id:"a2_out",  t:"long", q:"Outcome achieved", lim:1200},
-  {id:"a2_meas", t:"long", q:"Measurable result", lim:1200},
-  {id:"a2_rel",  t:"long", q:"Why this accomplishment is relevant to board service", lim:1200}
+ {h:"Governance-Relevant Experience Example 1", f:[
+  {id:"g1_ctx",  t:"long", q:"Context or challenge", r:1, lim:2500},
+  {id:"g1_resp", t:"long", q:"Your responsibility", r:1, lim:2500},
+  {id:"g1_out",  t:"long", q:"Outcome achieved", r:1, lim:2500},
+  {id:"g1_rel",  t:"long", q:"Board-level relevance", r:1, lim:2500}
  ]},
- {h:"", sub:"Accomplishment 3", f:[
-  {id:"a3_org",  t:"long", q:"Organization and context", lim:1200},
-  {id:"a3_chal", t:"long", q:"Strategic, financial, operational, or organizational challenge", lim:1200},
-  {id:"a3_resp", t:"long", q:"Your specific responsibility", lim:1200},
-  {id:"a3_dec",  t:"long", q:"Important decisions you made or influenced", lim:1200},
-  {id:"a3_stak", t:"long", q:"Stakeholders involved", lim:1200},
-  {id:"a3_out",  t:"long", q:"Outcome achieved", lim:1200},
-  {id:"a3_meas", t:"long", q:"Measurable result", lim:1200},
-  {id:"a3_rel",  t:"long", q:"Why this accomplishment is relevant to board service", lim:1200}
+ {h:"Governance-Relevant Experience Example 2", f:[
+  {id:"g2_ctx",  t:"long", q:"Context or challenge", lim:2500},
+  {id:"g2_resp", t:"long", q:"Your responsibility", lim:2500},
+  {id:"g2_out",  t:"long", q:"Outcome achieved", lim:2500},
+  {id:"g2_rel",  t:"long", q:"Board-level relevance", lim:2500}
  ]},
- {h:"", f:[
-  {id:"a_diff",  t:"long", q:"Which of these accomplishments is most differentiated in the board market? Why?", lim:1200},
-  {id:"a_ent",   t:"long", q:"Which accomplishment best demonstrates enterprise-level judgment? Why?", lim:1200}
- ]}]},
-/* ---------- STEP 5 — sections 7, 8, 9, 10 ---------- */
-{n:5, title:"Capabilities, industries, strategic situations",
- intro:"Where you hold credibility, and the situations in which a board would call on you. Select tightly. A short list reads stronger than a long one.",
- groups:[
- {h:"7. Core Enterprise Capabilities", f:[
-  {id:"c_core", t:"multi", q:"Select no more than five capabilities for which you have substantial and demonstrable experience.", r:1, cap:5,
-   o:["CEO and enterprise leadership","P&L leadership","Enterprise strategy","Corporate transformation","Capital allocation","Financial oversight","Mergers and acquisitions","Post-merger integration","Enterprise risk management","Crisis leadership","Stakeholder management","Investor relations","CEO and executive succession","Culture and organizational effectiveness","International expansion","Public policy and government relations","Sustainability and ESG","Private equity value creation","Founder or family-business transition","Other"], other:1},
-  {id:"c_two",  t:"long",  q:"Which two of these capabilities most clearly differentiate you from other executives with similar backgrounds?", r:1, lim:1200},
-  {id:"c_evid", t:"long",  q:"What evidence demonstrates those differentiating capabilities?", r:1, lim:2500}
- ]},
- {h:"8. Functional and Technical Capabilities", f:[
-  {id:"f_areas",t:"multi", q:"Select no more than five areas for which you possess significant and board-relevant expertise.", r:1, cap:5,
-   o:["Growth and commercialization","Go-to-market strategy","Enterprise sales","Business development","Product commercialization","Pricing strategy","Customer and market strategy","Operations","Manufacturing","Supply chain and procurement","Quality and safety","Program management","Financial management","Corporate finance","Technology strategy","Digital transformation","Artificial intelligence","Data strategy","Cybersecurity","Software and product management","Human capital and succession","Organizational design","Regulatory and compliance","Government relations","Other"], other:1},
-  {id:"f_prom", t:"long",  q:"Which of these areas should be most prominent in your board positioning?", r:1, lim:1200},
-  {id:"f_supp", t:"long",  q:"Which areas are valuable supporting capabilities but should not define your board profile?", lim:1200}
- ]},
- {h:"9. Industry and Market Credibility", f:[
-  {id:"i_prim", t:"multi", q:"Which industries give you immediate credibility?", help:"Select no more than three primary sectors:", r:1, cap:3,
-   o:["Aerospace and defense","Aviation","Space","Industrial and manufacturing","Technology","SaaS and software","Artificial intelligence and data","Cybersecurity","Financial services","Healthcare","Life sciences","Energy and utilities","Consumer and retail","Telecommunications","Professional services","Media and entertainment","Education","Real estate","Transportation and logistics","Government and public sector","Nonprofit and social impact","Private equity","Venture capital","Sustainability and climate","Other"], other:1},
-  {id:"i_evid", t:"long",  q:"What evidence supports your credibility in each selected sector?",
-   help:"Consider your tenure, scope, reputation, relationships, accomplishments, and familiarity with the sector's economics and risks.", r:1, lim:2500},
-  {id:"i_adj",  t:"multi", q:"Which adjacent sectors could credibly value your experience?", help:"Select no more than three.", cap:3,
-   o:["Aerospace and defense","Aviation","Space","Industrial and manufacturing","Technology","SaaS and software","Artificial intelligence and data","Cybersecurity","Financial services","Healthcare","Life sciences","Energy and utilities","Consumer and retail","Telecommunications","Professional services","Media and entertainment","Education","Real estate","Transportation and logistics","Government and public sector","Nonprofit and social impact","Private equity","Venture capital","Sustainability and climate","Other"], other:1},
-  {id:"i_care", t:"long",  q:"Which sectors may appear relevant but would require additional learning or careful positioning?", lim:1200},
-  {id:"i_no",   t:"long",  q:"Are there sectors or business models you would not consider? Why?", lim:1200}
- ]},
- {h:"10. Strategic Situation Relevance",
-  note:"Boards frequently appoint directors because their experience is particularly relevant to a foreseeable challenge, transition, or opportunity.", f:[
-  {id:"s_sit",  t:"multi", q:"During which situations would your experience become especially valuable?", help:"Select no more than three:", r:1, cap:3,
-   o:["Rapid growth","Enterprise transformation","Operational underperformance","Turnaround or restructuring","CEO succession","Founder transition","Leadership team buildout","International expansion","M&A","Post-merger integration","IPO preparation","Public-to-private transition","Private equity value creation","Capital constraints","Regulatory change","Digital transformation","Artificial intelligence adoption","Cybersecurity exposure","Supply-chain disruption","Product commercialization","Go-to-market transformation","New market entry","Crisis or reputational event","Other"], other:1},
-  {id:"s_each", t:"perSel", src:"s_sit", q:"For each selected situation, briefly describe:",
-   help:"The experience you have navigating it; the decisions you made or influenced; the results achieved; the lessons relevant to board oversight.", r:1, lim:2500},
-  {id:"s_cent", t:"long",  q:"Which one of these situations should be most central to your board positioning? Why?", r:1, lim:1200}
+ {h:"Director and Committee Profile Matching", f:[
+  {id:"d_prof", t:"multi", q:"Which director profiles best match your experience?", help:"Select all that apply:", r:1,
+   o:["Chair","Non-Executive Director","Independent Director","Executive Director","Lead Director","Other"], other:1},
+  {id:"d_comm", t:"multi", q:"Which committees align most closely with your experience?", help:"Select all that apply:", r:1,
+   o:["Audit","Risk","Nomination and Governance","Remuneration","Sustainability","Other"], other:1},
+  {id:"d_now",  t:"long", q:"Where could you contribute immediately?", r:1, lim:2500},
+  {id:"d_dev",  t:"long", q:"Where would you need further exposure or development?", lim:2500}
  ]}]},
 
-/* ---------- STEP 6 — sections 11, 12, 13, 14 ---------- */
-{n:6, title:"Appointment thesis and target board profile",
- intro:"The board-level problem you are equipped to help solve, and the organisations most likely to need it.",
+/* ---------- STEP 4 — Ideal board profile and readiness ---------- */
+{n:4, title:"Ideal board profile and readiness",
+ intro:"Describe the board you are targeting and rate your current readiness.",
  groups:[
- {h:"11. Board Appointment Thesis", f:[
-  {id:"t_prob", t:"long", q:"What board-level problem are you unusually well equipped to help an organization solve?", r:1, lim:2500},
-  {id:"t_why",  t:"long", q:"Why would a board choose you over another accomplished executive from your industry?", r:1, lim:2500},
-  {id:"t_caps", t:"long", q:"Which two or three capabilities support that proposition?", r:1, lim:1200},
-  {id:"t_evid", t:"long", q:"What evidence proves that you possess those capabilities?", r:1, lim:2500},
-  {id:"t_orgs", t:"long", q:"Which types of organizations are most likely to need your experience?", r:1, lim:1200},
-  {id:"t_enh",  t:"long", q:"What is the single greatest enhancement you could bring to a board?", r:1, lim:1200},
-  {id:"t_s1",   t:"text", q:"I am best positioned to serve organizations that are:", r:1},
-  {id:"t_s2",   t:"text", q:"I bring particular value in:", r:1},
-  {id:"t_s3",   t:"text", q:"I am most relevant to organizations facing:", r:1},
-  {id:"t_s4",   t:"text", q:"My strongest board contribution is:", r:1},
-  {id:"t_s5",   t:"text", q:"The evidence supporting this contribution is:", r:1},
-  {id:"t_s6",   t:"text", q:"My likely committee contribution is:", r:1},
-  {id:"t_chg",  t:"long", q:"What would need to change in your current professional and personal commitments for you to serve effectively on a board, particularly during periods of increased demand?", r:1, lim:2500},
-  {id:"t_cap",  t:"long", q:"If a board required significantly more time than expected because of a transaction, crisis, CEO transition, or regulatory issue, how much additional capacity could you realistically provide?", r:1, lim:1200},
-  {id:"t_prop", t:"long", q:"In two or three sentences, describe the value you believe you would bring to a board.", r:1, lim:1200}
+ {h:"Ideal Board Profile and Role Targets", f:[
+  {id:"ib_ind",   t:"long", q:"Ideal board profile – Industry or sector", r:1, lim:1200},
+  {id:"ib_own",   t:"long", q:"Ideal board profile – Ownership structure", r:1, lim:1200},
+  {id:"ib_stage", t:"long", q:"Ideal board profile – Company stage and scale", r:1, lim:1200},
+  {id:"ib_geo",   t:"long", q:"Ideal board profile – Geographic footprint", r:1, lim:1200},
+  {id:"ib_prio",  t:"long", q:"Ideal board profile – Primary strategic priorities", r:1, lim:1200},
+  {id:"ib_accom", t:"long", q:"What would the organization likely be trying to accomplish during your tenure?", r:1, lim:2500},
+  {id:"ib_known", t:"long", q:"What contribution would you want to be known for?", r:1, lim:2500},
+  {id:"ib_cred",  t:"long", q:"What type of first or next board role would be credible within the next one to two years?", r:1, lim:2500},
+  {id:"ib_port",  t:"long", q:"What would you like your board portfolio to include within three to five years?", lim:2500},
+  {id:"ib_orgs",  t:"long", q:"Are there specific organizations, sectors, or causes you would be proud to support?", lim:2500}
  ]},
- {h:"12. Target Board Profile", sub:"Ownership Environment", f:[
-  {id:"o_env",  t:"multi",q:"Which board environments interest you most?", help:"Select all that apply:", r:1,
-   o:["Public company","Privately held company","Private equity portfolio company","Venture-backed company","Founder-led company","Family-owned company","Advisory board","Nonprofit or mission-driven organization","Government or public-sector organization","Other"], other:1},
-  {id:"o_two",  t:"long", q:"Which two ownership environments are the strongest fit for you? Why?", r:1, lim:1200}
- ]},
- {h:"", sub:"Company Stage", f:[
-  {id:"o_stage",t:"multi",q:"Which company stages are the strongest fit?", help:"Select all that apply:", r:1,
-   o:["Early stage","Venture growth","Scale-up","Mid-market","Large enterprise","Pre-transaction","Post-transaction","Pre-IPO","Public company","Turnaround","Mature or stable enterprise"]},
-  {id:"o_scale",t:"long", q:"What organization scale is most appropriate for your experience?",
-   help:"Consider: revenue; enterprise value; market capitalization; employee count; geographic footprint; operational complexity.", r:1, lim:1200}
- ]},
- {h:"", sub:"Geography", f:[
-  {id:"o_geo",  t:"multi",q:"What geographic scope would you be comfortable supporting?", r:1,
-   o:["Local","National","North American","European","Asia-Pacific","Global","Other"], other:1},
-  {id:"o_where",t:"long", q:"Which countries or regions are most relevant to your experience?", r:1, lim:1200},
-  {id:"o_not",  t:"long", q:"Are there countries or regions where you would be unable or unwilling to serve?", lim:1200}
- ]},
- {h:"", sub:"Strategic Priorities", f:[
-  {id:"o_acc",  t:"long", q:"What would your ideal organization likely be trying to accomplish during your tenure?", r:1, lim:1200},
-  {id:"o_known",t:"long", q:"What contribution would you want to be known for?", r:1, lim:1200},
-  {id:"o_cred", t:"long", q:"What type of first or next board role would be credible within the next one to two years?", r:1, lim:1200},
-  {id:"o_str",  t:"long", q:"What type of appointment would represent an appropriate stretch?", lim:1200}
- ]},
- {h:"13. First-Seat Strategy and Trade-Offs", f:[
-  {id:"fs_one", t:"one",  q:"Which factor matters most in your first or next board appointment?", help:"Select one:", r:1,
-   o:["Quality of the organization","Sector relevance","Governance experience","Committee experience","Public-company credibility","Private equity exposure","Compensation","Equity participation","Mission","Network value","International exposure","Strategic complexity"]},
-  {id:"fs_three",t:"multi",q:"Which three additional factors are most important?", r:1, cap:3,
-   o:["Quality of the organization","Sector relevance","Governance experience","Committee experience","Public-company credibility","Private equity exposure","Compensation","Equity participation","Mission","Network value","International exposure","Strategic complexity"]},
-  {id:"fs_comp",t:"long", q:"Which elements would you be willing to compromise on to secure the right developmental opportunity?", r:1, lim:1200},
-  {id:"fs_small",t:"one", q:"Would you consider a smaller or less prominent organization to gain meaningful governance experience?", r:1,
-   o:["Yes","No","Possibly"]},
-  {id:"fs_small_x",t:"long", q:"Please explain.", r:1, lim:1200},
-  {id:"fs_adv", t:"one",  q:"Would you consider an advisory appointment as a deliberate bridge to a fiduciary board role?", r:1,
-   o:["Yes","No","Possibly"]},
-  {id:"fs_np",  t:"one",  q:"Would you consider a nonprofit or mission-driven role if it offered substantive governance responsibility?", r:1,
-   o:["Yes","No","Possibly"]},
-  {id:"fs_min", t:"long", q:"What is the smallest organization or earliest company stage you would credibly support?", r:1, lim:1200},
-  {id:"fs_wrongish",t:"long", q:"What opportunities might appear attractive but would not advance your longer-term board strategy?", lim:1200},
-  {id:"fs_wrong",t:"long",q:"What would constitute the wrong first or next board appointment for you?", r:1, lim:1200}
- ]},
- {h:"14. Director and Committee Profile", f:[
-  {id:"d_prof", t:"multi",q:"Which director profiles most closely align with your current experience?", help:"Select all that apply:", r:1,
-   o:["Non-executive director","Independent director","Executive director","Investor-appointed director","Advisory director","Committee member","Committee chair","Lead director","Board chair"]},
-  {id:"d_comm", t:"multi",q:"Which committees align most closely with your experience?", help:"Select no more than three:", r:1, cap:3,
-   o:["Audit","Risk","Nomination and governance","Compensation or remuneration","Technology","Cybersecurity","Sustainability","Strategy","Finance","Investment","M&A","Human resources","Safety","Regulatory or compliance","Other"], other:1},
-  {id:"d_now",  t:"long", q:"Where could you contribute immediately?", r:1, lim:1200},
-  {id:"d_dev",  t:"long", q:"Where would you need further exposure or development?", r:1, lim:1200},
-  {id:"d_entry",t:"long", q:"Which committee could provide the most credible initial entry point?", r:1, lim:1200},
-  {id:"d_long", t:"long", q:"Which committee or leadership role could become realistic over the longer term?", lim:1200}
- ]}]},
-/* ---------- STEP 7 — sections 15, 16, 17 ---------- */
-{n:7, title:"Market perception, availability, self-assessment",
- intro:"How the market reads you today, what you are able to commit, and an honest view of your readiness.",
- groups:[
- {h:"15. Market Perception and Positioning",
-  note:"How do you believe the following groups would describe you?", f:[
-  {id:"k_ceo",  t:"long", q:"CEOs and senior executives", r:1, lim:1200},
-  {id:"k_chair",t:"long", q:"Board chairs and directors", r:1, lim:1200},
-  {id:"k_inv",  t:"long", q:"Investors or owners", r:1, lim:1200},
-  {id:"k_coll", t:"long", q:"Current and former colleagues", r:1, lim:1200},
-  {id:"k_three",t:"long", q:"What three qualities would these groups most consistently associate with your leadership?", r:1, lim:1200},
-  {id:"k_perc", t:"multi",q:"How are you currently perceived in the market?", help:"Select up to three:", r:1, cap:3,
-   o:["Enterprise leader","P&L operator","Functional specialist","Sector expert","Transformation leader","Growth executive","Technology leader","Financial leader","Governance leader","Founder or entrepreneur","Investor","Adviser","Other"], other:1},
-  {id:"k_narrow",t:"long",q:"Where might your experience appear narrower than it actually is?", r:1, lim:1200},
-  {id:"k_under",t:"long", q:"What parts of your experience may be misunderstood or undervalued?", r:1, lim:1200},
-  {id:"k_conc", t:"long", q:"What concerns or questions might a nominating committee have about your candidacy?", r:1, lim:1200},
-  {id:"k_hist", t:"long", q:"Are there elements of your career history that may require explanation or careful positioning?", lim:1200},
-  {id:"k_over", t:"long", q:"What evidence could overcome any perceived gaps?", r:1, lim:1200},
-  {id:"k_comp", t:"long", q:"What would make you clearly more compelling than another candidate with similar experience?", r:1, lim:1200}
- ]},
- {h:"16. Practical Readiness and Availability", f:[
-  {id:"r_emp",  t:"one",  q:"Has your current employer formally confirmed that you may accept an outside board appointment?", r:1,
-   o:["Yes","No","Formal approval would be required","I have not yet confirmed","Not applicable"]},
-  {id:"r_avail",t:"one",  q:"When would you realistically be available to accept an appointment?", r:1,
-   o:["Immediately","Within six months","Within 12 months","Within 24 months","Longer-term"]},
-  {id:"r_how",  t:"text", q:"How many board appointments could you responsibly hold?", r:1},
-  {id:"r_trav", t:"one",  q:"What level of travel would you accept?", r:1,
-   o:["Limited local travel","Domestic travel","North American travel","International travel","Extensive global travel"]},
-  {id:"r_inp",  t:"one",  q:"Would you be available for regular in-person board and committee meetings?", r:1,
-   o:["Yes","No","Depending on location"]},
-  {id:"r_surge",t:"one",  q:"During a transaction, crisis, CEO transition, investigation, restructuring, or regulatory event, could you accommodate a material increase in board responsibilities?", r:1,
-   o:["Yes","No","Depending on the circumstances"]},
-  {id:"r_lim",  t:"long", q:"Please explain any limitations.", lim:1200},
-  {id:"r_restr",t:"one",  q:"Are you currently aware of any employer, competitive, regulatory, geographic, or other restrictions that could affect your ability to serve?", r:1,
-   o:["Yes","No","Unsure"]},
-  {id:"r_ctx",  t:"long", q:"Please provide appropriate context.", r:1, lim:2500,
-   showIf:{f:"r_restr", is:["Yes","Unsure"]}}
- ]},
- {h:"17. Board Readiness Self-Assessment",
-  note:"Rate each area from 1 to 5. 1: Limited exposure. 2: Developing. 3: Credible. 4: Strong. 5: Highly developed.", f:[
-  {id:"z_overall", t:"scale", q:"Overall board readiness", r:1},
-  {id:"z_strat",   t:"scale", q:"Enterprise strategic thinking", r:1},
+ {h:"Board Readiness Self-Assessment",
+  note:"Rate each area from 1 to 5.", f:[
+  {id:"z_overall", t:"scale", q:"Overall board readiness self-assessment", r:1},
+  {id:"z_strat",   t:"scale", q:"Strategic thinking", r:1},
   {id:"z_fin",     t:"scale", q:"Financial acumen", r:1},
-  {id:"z_lit",     t:"scale", q:"Financial statement literacy", r:1},
-  {id:"z_cap",     t:"scale", q:"Capital allocation", r:1},
-  {id:"z_gov",     t:"scale", q:"Governance and fiduciary understanding", r:1},
+  {id:"z_gov",     t:"scale", q:"Governance and compliance", r:1},
   {id:"z_risk",    t:"scale", q:"Risk oversight", r:1},
   {id:"z_stake",   t:"scale", q:"Stakeholder engagement", r:1},
   {id:"z_ind",     t:"scale", q:"Industry expertise", r:1},
-  {id:"z_judg",    t:"scale", q:"Leadership judgment", r:1},
-  {id:"z_pres",    t:"scale", q:"Executive presence", r:1},
-  {id:"z_chal",    t:"scale", q:"Constructive challenge", r:1},
-  {id:"z_list",    t:"scale", q:"Listening and inquiry", r:1},
-  {id:"z_cons",    t:"scale", q:"Consensus building", r:1},
-  {id:"z_succ",    t:"scale", q:"CEO and executive succession", r:1},
-  {id:"z_crisis",  t:"scale", q:"Crisis oversight", r:1},
-  {id:"z_indep",   t:"scale", q:"Independence of thought", r:1},
-  {id:"z_bound",   t:"scale", q:"Understanding of board-management boundaries", r:1},
-  {id:"z_first",   t:"long",  q:"Which two areas should you strengthen first?", r:1, lim:1200},
-  {id:"z_evid",    t:"long",  q:"What evidence supports your strongest ratings?", r:1, lim:2500},
-  {id:"z_diff",    t:"long",  q:"Where might others assess your readiness differently?", lim:1200},
-  {id:"z_edu",     t:"long",  q:"What governance education, exposure, or experience would be most valuable?", r:1, lim:1200}
+  {id:"z_lead",    t:"scale", q:"Leadership and influence", r:1},
+  {id:"z_strengthen", t:"long", q:"Which two areas should you strengthen first?", r:1, lim:1200}
  ]}]},
 
-/* ---------- STEP 8 — sections 18, 19, 20, 21 ---------- */
-{n:8, title:"Positioning, development, review priorities",
- intro:"Inputs for your board biography, the actions you are prepared to take, and the questions you want your strategy review to answer.",
+/* ---------- STEP 5 — Biography, positioning, acknowledgement ---------- */
+{n:5, title:"Biography, positioning, and submit",
+ intro:"Complete your biography inputs and positioning statements, attach materials, then submit.",
  groups:[
- {h:"18. Board Biography and Positioning Inputs", f:[
-  {id:"y_caps", t:"multi",q:"Which capabilities should be most prominent in your board biography?", help:"Select no more than five:", r:1, cap:5,
-   o:["Enterprise strategy","Financial oversight","Governance","Risk management","Transformation","M&A","Operations","Growth and commercialization","Talent and succession","Digital and technology","Artificial intelligence","Cybersecurity","International growth","ESG and sustainability","Regulatory leadership","Crisis management","Private equity value creation","Founder support","Other"], other:1},
-  {id:"y_ind",  t:"long", q:"Which industries should be emphasized?", r:1, lim:1200},
-  {id:"y_own",  t:"long", q:"Which ownership environments should be emphasized?", r:1, lim:1200},
-  {id:"y_geo",  t:"long", q:"Which geographic experience should be emphasized?", r:1, lim:1200},
-  {id:"y_acc",  t:"long", q:"Which accomplishments must appear?", r:1, lim:2500},
-  {id:"y_met",  t:"long", q:"Which metrics or indicators of scale should appear?",
-   help:"Examples may include: revenue; P&L responsibility; enterprise value; capital deployed; employees; countries; facilities; transactions; growth achieved; margin improvement; organizational transformation.", r:1, lim:2500},
-  {id:"y_orgs", t:"long", q:"Which current or former organizations provide the strongest credibility?", r:1, lim:1200},
-  {id:"y_must", t:"long", q:"Is there anything that must be represented in your board biography?", lim:1200},
-  {id:"y_min",  t:"long", q:"Is there anything that should be minimized, reframed, or excluded?", lim:1200},
-  {id:"y_c1",   t:"text", q:"My target board environments are:", r:1},
-  {id:"y_c2",   t:"text", q:"My likely committee contribution is:", r:1},
-  {id:"y_c3",   t:"text", q:"My near-term board goal is:", r:1},
-  {id:"y_c4",   t:"text", q:"My longer-term board aspiration is:", r:1},
-  {id:"y_c5",   t:"text", q:"The three words I would want a board chair to associate with me are:", r:1}
+ {h:"Board Biography Inputs", f:[
+  {id:"bio_role",  t:"long", q:"Current or most significant role", r:1, lim:2500},
+  {id:"bio_years", t:"text", q:"Years of executive leadership", r:1},
+  {id:"bio_pl",    t:"text", q:"Largest P&L or budget responsibility"},
+  {id:"bio_team",  t:"text", q:"Largest team or organization led"},
+  {id:"bio_ind",   t:"text", q:"Industries and markets"},
+  {id:"bio_own",   t:"text", q:"Ownership environments"},
+  {id:"bio_geo",   t:"text", q:"Geographic scope"},
+  {id:"bio_boards",t:"long", q:"Current board or advisory roles", lim:2500},
+  {id:"bio_edu",   t:"long", q:"Education and credentials", lim:2500},
+  {id:"bio_acc",   t:"long", q:"List three defining accomplishments that best support your board candidacy", r:1, lim:2500},
+  {id:"bio_cap",   t:"long", q:"Which capabilities should be most prominent in your board biography?", lim:2500},
+  {id:"bio_must",  t:"long", q:"Is there anything that must be represented in your board biography?", lim:2500}
  ]},
- {h:"19. Development and Activation Readiness", f:[
-  {id:"v_done", t:"multi",q:"What actions have you already taken to pursue board service?", help:"Select all that apply:", r:1,
-   o:["Developed a board biography","Developed a board résumé","Completed governance education","Joined a fiduciary board","Joined an advisory board","Contacted executive search firms","Spoke with directors or chairs","Approached private equity or venture firms","Requested introductions","Attended governance events","Published thought leadership","Joined professional associations","Pursued nonprofit governance experience","No formal action yet","Other"], other:1},
-  {id:"v_block",t:"long", q:"What has prevented you from making greater progress?", r:1, lim:1200},
-  {id:"v_time", t:"text", q:"How much time are you willing to dedicate each month to board development?", r:1},
-  {id:"v_next", t:"multi",q:"Which actions are you prepared to undertake during the next 12 months?", help:"Select all that apply:", r:1,
-   o:["Refine my board proposition","Develop a board-specific biography","Develop a board-specific résumé","Complete governance education","Request references","Reconnect with relevant relationships","Build relationships with board chairs","Build relationships with investors","Attend targeted events","Publish thought leadership","Speak at events","Participate in peer forums","Pursue advisory experience","Pursue nonprofit governance experience","Consider a smaller initial board","Other"], other:1},
-  {id:"v_a1",   t:"text", q:"Action 1", help:"Three actions you are personally prepared to complete within the next 90 days.", r:1},
-  {id:"v_a2",   t:"text", q:"Action 2", r:1},
-  {id:"v_a3",   t:"text", q:"Action 3", r:1},
-  {id:"v_supp", t:"multi",q:"What support would be most valuable from Project Alpha?", help:"Select up to five:", r:1, cap:5,
-   o:["Board readiness assessment","Board-market perspective","Target board profile","Board appointment thesis","Board biography","Board résumé","LinkedIn positioning","Governance education recommendations","Committee positioning","Relationship mapping","Introduction strategy","Private equity positioning","Public-company positioning","Advisory board strategy","First-seat strategy","Interview preparation","Board opportunity diligence","Ongoing accountability","Other"], other:1},
-  {id:"v_meas", t:"long", q:"How would you like progress to be measured over the next year?", r:1, lim:1200}
+ {h:"Positioning Statements", f:[
+  {id:"t_s1", t:"text", q:"I am best positioned to serve organizations that are:", r:1},
+  {id:"t_s2", t:"text", q:"I bring particular value in:", r:1},
+  {id:"t_s3", t:"text", q:"I am most relevant to organizations facing:", r:1},
+  {id:"t_s4", t:"text", q:"My strongest board contribution is:", r:1},
+  {id:"t_s5", t:"text", q:"My target board environments are:", r:1},
+  {id:"t_s6", t:"text", q:"My likely committee contribution is:", r:1},
+  {id:"t_s7", t:"text", q:"My near-term board goal is:", r:1},
+  {id:"t_s8", t:"text", q:"My longer-term board aspiration is:", r:1},
+  {id:"bio_emph", t:"multi", q:"Which capabilities should be emphasized in your board biography?", help:"Select all that apply:",
+   o:["Strategy","Financial oversight","Governance","Risk management","Transformation","M&A","Operations","Talent and succession","Digital and technology","International growth","ESG and sustainability","Other"], other:1},
+  {id:"t_chg", t:"long", q:"What would need to change in your current professional and personal commitments for you to serve effectively on a board, particularly during periods of increased demand?", lim:2500},
+  {id:"t_cap", t:"long", q:"If a board required significantly more time than expected because of a transaction, crisis, CEO transition, or regulatory issue, how much additional capacity could you realistically provide?", lim:2500}
  ]},
- {h:"20. Strategy Review Priorities", f:[
-  {id:"q_q1",   t:"long", q:"Question 1", help:"The three most important questions you would like addressed during your Project Alpha strategy review.", r:1, lim:1200},
-  {id:"q_q2",   t:"long", q:"Question 2", r:1, lim:1200},
-  {id:"q_q3",   t:"long", q:"Question 3", r:1, lim:1200},
-  {id:"q_succ", t:"long", q:"What would a successful Project Alpha strategy review produce for you?", r:1, lim:2500},
-  {id:"q_verb", t:"long", q:"Are there any sensitive matters you would prefer to discuss verbally rather than include in this workbook?", lim:1200},
-  {id:"q_else", t:"long", q:"Is there anything else Christian & Timbers should understand about your aspirations, experience, readiness, or circumstances?", lim:2500}
+ {h:"Supporting Documents", f:[
+  {id:"files", t:"file", q:"Please attach your board bio, or resume",
+   help:"Upload your board biography or résumé. Additional supporting documents are welcome."}
  ]},
- {h:"21. Positioning and Market Engagement Permission", f:[
-  {id:"pm_ok",  t:"one",  q:"How comfortable are you with Christian & Timbers confidentially testing your board positioning with selected trusted market relationships?", help:"Select one:", r:1,
-   o:["Comfortable now","Comfortable after reviewing and approving my final positioning","Comfortable only with prior approval of each individual contact","Not comfortable at this stage"],
-   note:"This question does not authorize Christian & Timbers to formally submit, nominate, or represent you for a specific appointment without appropriate discussion and authorization."}
- ]}]},
-
-/* ---------- STEP 9 — section 22 ---------- */
-{n:9, title:"Supporting documents",
- intro:"Attach your executive resume. Add any board biography or governance materials you already hold.",
- groups:[
- {h:"22. Supporting Documents", note:"Please attach the most current versions available. PDF or Word. Up to 15 MB per file.", f:[]},
- {h:"", sub:"Required", f:[
-  {id:"u_req", t:"file", q:"Executive résumé or curriculum vitae", r:1, max:1}
- ]},
- {h:"", sub:"Optional", f:[
-  {id:"u_opt", t:"file", q:"Optional", max:4,
-   help:"Up to four files: existing board biography; existing board résumé; professional or corporate biography; current board profile; governance qualifications; published articles; speaking materials; other relevant supporting documents."}
- ]}]},
-
-/* ---------- STEP 10 — review, acknowledgement, submit ---------- */
-{n:10, title:"Review and submit",
- intro:"Review your answers before submitting. Edit any section, then confirm the acknowledgement.",
- review:1,
- groups:[
  {h:"Participant Acknowledgement", f:[
   {id:"ack", t:"ack", r:1,
    lines:[
@@ -384,10 +161,12 @@ var PA_STEPS = [
     "I understand that Christian & Timbers does not have permission to formally submit, nominate, or represent me for a specific opportunity without prior discussion and my authorisation."
    ], label:"I agree"},
   {id:"ack_name", t:"text", q:"Participant name", r:1},
-  {id:"ack_date", t:"date", q:"Date", r:1},
-  {id:"mkt", t:"opt", q:"Optional. Send me Christian &amp; Timbers commentary on governance and the board market. This is separate from Project Alpha and has no bearing on your participation."}
+  {id:"ack_date", t:"date", q:"Date", r:1}
  ]}]}
-];
+]
+
+
+var TOTAL_STEPS = PA_STEPS.length;
 
 /* ============================================================
    State. Swap this layer for the application API.
@@ -589,9 +368,9 @@ function screenWelcome(){
   return '<div class="pw-page">'
    + '<p class="pw-eyebrow">A Christian &amp; Timbers Initiative</p>'
    + '<h1 class="pw-h1">Board Aspiration and Readiness Workbook</h1>'
-   + '<p class="pw-intro">Your answers inform a confidential Project Alpha strategy review and the development of your board readiness assessment, appointment thesis, target board profile, first-seat strategy, positioning, development priorities, and recommended next steps.</p>'
+   + '<p class="pw-intro">Your answers inform a confidential Project Alpha strategy review and the development of your board readiness assessment, appointment thesis, target board profile, positioning, and recommended next steps.</p>'
    + '<p class="pw-note" style="margin-top:22px">Answer candidly and with enough detail for a considered assessment. Where possible, support your answers with specific examples, measurable results, and organisational context.</p>'
-   + '<p class="pw-note" style="margin-top:18px">Ten steps, approximately 45 to 60 minutes. Your answers save as you go, and a link returns you to where you stopped.</p>'
+   + '<p class="pw-note" style="margin-top:18px">Five steps, approximately 45 to 60 minutes. Your answers save as you go, and a link returns you to where you stopped.</p>'
    + '<p class="pw-note" style="margin-top:18px">Participation does not guarantee a board appointment, nomination, introduction, interview, or placement.</p>'
    + '<p style="margin-top:38px"><button class="pw-btn" type="button" id="pw-begin">'
    + (D.step > 0 ? 'Continue where you stopped' : 'Begin')
@@ -602,7 +381,7 @@ function screenWelcome(){
 function screenStep(s){
   var h = '<div class="pw-page">'
    + '<div class="pw-sum" id="pw-sum" role="alert" tabindex="-1"><strong id="pw-sum-t"></strong><ul id="pw-sum-l"></ul></div>'
-   + '<p class="pw-eyebrow">Step ' + s.n + ' of 10</p>'
+   + '<p class="pw-eyebrow">Step ' + s.n + ' of ' + TOTAL_STEPS + '</p>'
    + '<h1 class="pw-h1">' + esc(s.title) + '</h1>'
    + '<p class="pw-intro">' + esc(s.intro) + '</p>';
 
@@ -676,11 +455,11 @@ function paintProgress(){
   var p = el('pw-prog'), n = el('pw-stepn');
   if (D.done || D.step === 0){ p.innerHTML = ''; n.textContent = ''; return; }
   var h = '';
-  for (var i = 1; i <= 10; i++){
+  for (var i = 1; i <= TOTAL_STEPS; i++){
     h += '<i class="' + (i < D.step ? 'on' : i === D.step ? 'now' : '') + '"></i>';
   }
   p.innerHTML = h;
-  n.textContent = 'Step ' + D.step + ' of 10';
+  n.textContent = 'Step ' + D.step + ' of ' + TOTAL_STEPS;
 }
 
 function render(opts){
@@ -694,7 +473,7 @@ function render(opts){
 
   el('pw-nav').hidden = (D.step === 0 || D.done);
   el('pw-back').style.visibility = D.step > 1 ? 'visible' : 'hidden';
-  el('pw-next').innerHTML = (D.step === 10)
+  el('pw-next').innerHTML = (D.step === TOTAL_STEPS)
     ? 'Submit my workbook'
     : 'Continue <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.4 12h15.2"/><path d="m13.8 6.4 5.8 5.6-5.8 5.6"/></svg>';
 
@@ -941,7 +720,7 @@ function validateStep(){
    ============================================================ */
 el('pw-next').addEventListener('click', function(){
   if (!validateStep()) return;
-  if (D.step === 10){
+  if (D.step === TOTAL_STEPS){
     persist({ done: true }).then(function(j){
       if (!j) return;
       D.done = true;
