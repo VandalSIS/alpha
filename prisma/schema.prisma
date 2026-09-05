@@ -22,6 +22,8 @@ model Invitation {
   email       String
   code        String       @unique
   status      InviteStatus @default(INVITED)
+  /// Custom next-step copy shown on the participant portal (optional).
+  nextSteps   String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   invitedAt   DateTime     @default(now())
@@ -32,6 +34,7 @@ model Invitation {
   submission  Submission?
   magicLinks  MagicLink[]
   files       UploadedFile[]
+  portalDocs  PortalDocument[]
 }
 
 model Session {
@@ -60,7 +63,7 @@ model Submission {
   invitationId String     @unique
   invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
   reference    String     @unique
-  answers      String // JSON string (SQLite)
+  answers      String // JSON string
   step         Int        @default(0)
   done         Boolean    @default(false)
   createdAt    DateTime   @default(now())
@@ -77,6 +80,26 @@ model UploadedFile {
   mimeType     String
   size         Int
   createdAt    DateTime   @default(now())
+}
+
+/// Personal docs (invitationId set) or shared programme resources (invitationId null).
+model PortalDocument {
+  id           String      @id @default(cuid())
+  invitationId String?
+  invitation   Invitation? @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  /// "personal" | "resource"
+  kind         String
+  title        String
+  description  String?
+  /// External link (optional if a file is stored)
+  url          String?
+  category     String?
+  storedName   String?
+  originalName String?
+  mimeType     String?
+  size         Int?
+  sortOrder    Int         @default(0)
+  createdAt    DateTime    @default(now())
 }
 
 model AuditLog {

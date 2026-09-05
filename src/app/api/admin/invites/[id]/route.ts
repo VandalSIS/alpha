@@ -26,6 +26,10 @@ export async function GET(req: Request, ctx: Ctx) {
       include: {
         submission: true,
         files: { orderBy: { createdAt: "asc" } },
+        portalDocs: {
+          where: { kind: "personal" },
+          orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+        },
       },
     });
     if (!invite) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -45,9 +49,20 @@ export async function GET(req: Request, ctx: Ctx) {
       email: invite.email,
       code: invite.code,
       status: invite.status,
+      nextSteps: invite.nextSteps,
       createdAt: invite.createdAt,
       startedAt: invite.startedAt,
       submittedAt: invite.submittedAt,
+      portalDocs: invite.portalDocs.map((d) => ({
+        id: d.id,
+        title: d.title,
+        description: d.description,
+        url: d.url,
+        hasFile: !!d.storedName,
+        originalName: d.originalName,
+        size: d.size,
+        createdAt: d.createdAt,
+      })),
       files: invite.files.map((f) => ({
         id: f.id,
         fieldId: f.fieldId,
@@ -82,10 +97,21 @@ export async function DELETE(req: Request, ctx: Ctx) {
     for (const f of files) {
       await removeStoredFile(f.storedName);
     }
+    const portalDocs = await prisma.portalDocument.findMany({ where: { invitationId: id } });
+    for (const d of portalDocs) {
+      if (d.storedName) await removeStoredFile(d.storedName);
+    }
 
     await prisma.invitation.delete({ where: { id } });
     await prisma.auditLog.create({
-      data: { action: "invite.deleted", meta: JSON.stringify({ id, filesRemoved: files.length }) },
+      data: {
+        action: "invite.deleted",
+        meta: JSON.stringify({
+          id,
+          filesRemoved: files.length,
+          portalDocsRemoved: portalDocs.length,
+        }),
+      },
     });
     return NextResponse.json({ ok: true });
   } catch (e) {

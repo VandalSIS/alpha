@@ -483,9 +483,9 @@ function render(opts){
     window.scrollTo(0, y);
     requestAnimationFrame(function(){ window.scrollTo(0, y); });
   } else {
-    window.scrollTo(0, 0);
-    var head = v.querySelector('h1');
-    if (head){ head.setAttribute('tabindex','-1'); head.focus({preventScroll:true}); }
+  window.scrollTo(0, 0);
+  var head = v.querySelector('h1');
+  if (head){ head.setAttribute('tabindex','-1'); head.focus({preventScroll:true}); }
   }
 }
 
@@ -594,7 +594,7 @@ view.addEventListener('change', function(e){
         }
       });
       D.files[t.id] = cur;
-      persist();
+    persist();
       render({ keepScroll: true });
     }).catch(function(err){
       console.error(err);

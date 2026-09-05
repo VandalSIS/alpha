@@ -3,7 +3,7 @@ import Link from "next/link";
 const SITE = "https://www.christianandtimbers.com/apply-for-ai-board-opportunities";
 
 type Props = {
-  active?: "home" | "admin" | "enter" | "workbook";
+  active?: "home" | "admin" | "enter" | "workbook" | "portal";
   /** Participant-facing pages hide Admin / internal links. */
   variant?: "internal" | "participant";
 };
@@ -14,11 +14,17 @@ export function AppNav({ active, variant = "internal" }: Props) {
   return (
     <header className="bar">
       <div className="bar-in">
-        <Link href={participant ? SITE : "/"} className="nav-brand">
+        <Link href={participant ? "/portal" : "/"} className="nav-brand">
           Project Alpha
         </Link>
         {participant ? (
           <nav className="nav-links" aria-label="App">
+            <Link href="/portal" className={active === "portal" ? "on" : undefined}>
+              Portal
+            </Link>
+            <Link href="/workbook" className={active === "workbook" ? "on" : undefined}>
+              Workbook
+            </Link>
             <a href={SITE} target="_blank" rel="noopener noreferrer">
               Programme page ↗
             </a>

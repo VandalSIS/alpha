@@ -35,7 +35,7 @@ function EnterForm() {
         setError(data.error || "Could not open the workbook.");
         return;
       }
-      router.push(data.redirect || "/workbook");
+      router.push(data.redirect || "/portal");
     } catch {
       setError("Something went wrong. Try again.");
     } finally {
@@ -60,10 +60,11 @@ function EnterForm() {
   return (
     <div className="shell" style={{ maxWidth: 560 }}>
       <p className="kicker">Project Alpha · entry</p>
-      <h1 className="h1">Enter the workbook</h1>
+      <h1 className="h1">Enter Project Alpha</h1>
       <p className="body" style={{ marginTop: 16 }}>
         Project Alpha is by invitation. Enter the code from your invitation and the address it was
-        sent to. You can return with the same code whenever you need.
+        sent to. You will open your participant portal — workbook, documents, and resources in one
+        place.
       </p>
 
       <form onSubmit={onSubmit} style={{ marginTop: 28 }}>
@@ -92,7 +93,7 @@ function EnterForm() {
           />
         </div>
         <button className="btn" type="submit" disabled={busy}>
-          {busy ? "Opening…" : "Open workbook"}
+          {busy ? "Opening…" : "Open portal"}
         </button>
         {error ? <p className="err">{error}</p> : null}
         <p className="body" style={{ marginTop: 22, fontSize: 14 }}>

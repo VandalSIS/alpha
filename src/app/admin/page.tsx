@@ -10,8 +10,21 @@ type Invite = {
   email: string;
   code: string;
   status: string;
+  nextSteps?: string | null;
   createdAt: string;
   submission?: { reference: string; done: boolean } | null;
+};
+
+type PortalDoc = {
+  id: string;
+  title: string;
+  description: string | null;
+  url: string | null;
+  hasFile: boolean;
+  originalName: string | null;
+  size: number | null;
+  createdAt: string;
+  category?: string | null;
 };
 
 type SubmissionDetail = {
@@ -20,9 +33,11 @@ type SubmissionDetail = {
   email: string;
   code: string;
   status: string;
+  nextSteps: string | null;
   createdAt: string;
   startedAt: string | null;
   submittedAt: string | null;
+  portalDocs: PortalDoc[];
   files: {
     id: string;
     fieldId: string;
@@ -39,6 +54,15 @@ type SubmissionDetail = {
     answers: Record<string, unknown>;
   } | null;
 };
+
+const STATUSES = [
+  "INVITED",
+  "STARTED",
+  "IN_PROGRESS",
+  "SUBMITTED",
+  "IN_REVIEW",
+  "COMPLETE",
+] as const;
 
 const labels = fieldLabels as Record<string, string>;
 
@@ -86,6 +110,18 @@ export default function AdminPage() {
   const [detail, setDetail] = useState<SubmissionDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
 
+  const [editStatus, setEditStatus] = useState("");
+  const [editNextSteps, setEditNextSteps] = useState("");
+  const [docTitle, setDocTitle] = useState("");
+  const [docUrl, setDocUrl] = useState("");
+  const [docFile, setDocFile] = useState<File | null>(null);
+
+  const [resources, setResources] = useState<PortalDoc[]>([]);
+  const [resTitle, setResTitle] = useState("");
+  const [resUrl, setResUrl] = useState("");
+  const [resCategory, setResCategory] = useState("");
+  const [resFile, setResFile] = useState<File | null>(null);
+
   async function load(pw: string) {
     const res = await fetch(`/api/admin/invites?password=${encodeURIComponent(pw)}`);
     if (!res.ok) throw new Error("Unauthorized");
@@ -94,11 +130,18 @@ export default function AdminPage() {
     setUnlocked(true);
   }
 
+  async function loadResources(pw: string) {
+    const res = await fetch(`/api/admin/resources?password=${encodeURIComponent(pw)}`);
+    if (!res.ok) return;
+    setResources(await res.json());
+  }
+
   async function unlock(e: FormEvent) {
     e.preventDefault();
     setErr("");
     try {
       await load(password);
+      await loadResources(password);
     } catch {
       setErr("Wrong password.");
     }
@@ -208,10 +251,157 @@ export default function AdminPage() {
         return;
       }
       setDetail(data);
+      setEditStatus(data.status);
+      setEditNextSteps(data.nextSteps || "");
+      setDocTitle("");
+      setDocUrl("");
+      setDocFile(null);
     } catch {
       setErr("Server error.");
     } finally {
       setDetailLoading(false);
+    }
+  }
+
+  async function savePortalFields() {
+    if (!detail) return;
+    setErr("");
+    setMsg("");
+    setRowBusy(detail.id);
+    try {
+      const res = await fetch(`/api/admin/invites/${detail.id}/portal`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          password,
+          status: editStatus,
+          nextSteps: editNextSteps.trim() || null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErr(data.error || "Could not save portal fields.");
+        return;
+      }
+      setMsg("Portal stage / next steps saved.");
+      await load(password);
+      await viewAnswers(detail.id);
+    } catch {
+      setErr("Server error.");
+    } finally {
+      setRowBusy(null);
+    }
+  }
+
+  async function addPersonalDoc(e: FormEvent) {
+    e.preventDefault();
+    if (!detail) return;
+    setErr("");
+    setMsg("");
+    setRowBusy(detail.id);
+    try {
+      const form = new FormData();
+      form.set("password", password);
+      form.set("title", docTitle);
+      if (docUrl.trim()) form.set("url", docUrl.trim());
+      if (docFile) form.set("file", docFile);
+
+      const res = await fetch(`/api/admin/invites/${detail.id}/portal`, {
+        method: "POST",
+        body: form,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErr(typeof data.error === "string" ? data.error : "Could not add document.");
+        return;
+      }
+      setMsg("Document added to participant portal.");
+      setDocTitle("");
+      setDocUrl("");
+      setDocFile(null);
+      await viewAnswers(detail.id);
+    } catch {
+      setErr("Server error.");
+    } finally {
+      setRowBusy(null);
+    }
+  }
+
+  async function deletePersonalDoc(docId: string) {
+    if (!detail || !confirm("Remove this document from their portal?")) return;
+    setRowBusy(detail.id);
+    try {
+      const res = await fetch(`/api/admin/invites/${detail.id}/portal`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, docId }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setErr(data.error || "Delete failed.");
+        return;
+      }
+      setMsg("Document removed.");
+      await viewAnswers(detail.id);
+    } catch {
+      setErr("Server error.");
+    } finally {
+      setRowBusy(null);
+    }
+  }
+
+  async function addResource(e: FormEvent) {
+    e.preventDefault();
+    setErr("");
+    setMsg("");
+    setBusy(true);
+    try {
+      const form = new FormData();
+      form.set("password", password);
+      form.set("title", resTitle);
+      if (resCategory.trim()) form.set("category", resCategory.trim());
+      if (resUrl.trim()) form.set("url", resUrl.trim());
+      if (resFile) form.set("file", resFile);
+
+      const res = await fetch("/api/admin/resources", { method: "POST", body: form });
+      const data = await res.json();
+      if (!res.ok) {
+        setErr(typeof data.error === "string" ? data.error : "Could not add resource.");
+        return;
+      }
+      setMsg("Shared resource published to all portals.");
+      setResTitle("");
+      setResUrl("");
+      setResCategory("");
+      setResFile(null);
+      await loadResources(password);
+    } catch {
+      setErr("Server error.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function deleteResource(id: string) {
+    if (!confirm("Remove this shared resource?")) return;
+    setBusy(true);
+    try {
+      const res = await fetch("/api/admin/resources", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, id }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setErr(data.error || "Delete failed.");
+        return;
+      }
+      setMsg("Resource removed.");
+      await loadResources(password);
+    } catch {
+      setErr("Server error.");
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -319,10 +509,9 @@ export default function AdminPage() {
         <div className="shell" style={{ maxWidth: 1100 }}>
           <h1 className="h1">Invitations</h1>
           <p className="body" style={{ marginTop: 12 }}>
-            Add a participant. The system generates an invite code and sends the invitation email.
-            After submit they can still enter with the same code and will see{" "}
-            <strong>SUBMITTED</strong>. Use <strong>View</strong> to read answers,{" "}
-            <strong>Reopen</strong> to let them edit again.
+            Add a participant, manage workbook submissions, and update their{" "}
+            <strong>portal</strong> (stage, next steps, personal documents). Shared programme
+            resources are managed below.
           </p>
 
           <form onSubmit={createInvite} style={{ maxWidth: 520, marginTop: 8 }}>
@@ -362,7 +551,6 @@ export default function AdminPage() {
               {list.map((i) => {
                 const submitted =
                   i.status === "SUBMITTED" || i.status === "COMPLETE" || i.submission?.done;
-                const hasSubmission = !!i.submission;
                 const busyRow = rowBusy === i.id;
                 return (
                   <tr key={i.id}>
@@ -377,16 +565,14 @@ export default function AdminPage() {
                     <td>{i.submission?.reference || "—"}</td>
                     <td>
                       <div className="row-actions">
-                        {hasSubmission ? (
-                          <button
-                            type="button"
-                            className="btn-sm"
-                            disabled={busyRow || detailLoading}
-                            onClick={() => viewAnswers(i.id)}
-                          >
-                            View
-                          </button>
-                        ) : null}
+                        <button
+                          type="button"
+                          className="btn-sm"
+                          disabled={busyRow || detailLoading}
+                          onClick={() => viewAnswers(i.id)}
+                        >
+                          Portal / View
+                        </button>
                         {submitted ? (
                           <button
                             type="button"
@@ -419,6 +605,86 @@ export default function AdminPage() {
               ) : null}
             </tbody>
           </table>
+
+          <section className="admin-section" aria-labelledby="res-admin-h">
+            <h2 className="h2" id="res-admin-h">
+              Shared portal resources
+            </h2>
+            <p className="body" style={{ marginTop: 10 }}>
+              These appear for every participant under Project Alpha resources (podcasts, fireside
+              chats, governance notes, etc.).
+            </p>
+
+            <form onSubmit={addResource} style={{ maxWidth: 560, marginTop: 8 }}>
+              <div className="field">
+                <label htmlFor="resTitle">Title</label>
+                <input
+                  id="resTitle"
+                  value={resTitle}
+                  onChange={(e) => setResTitle(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="resCategory">Category (optional)</label>
+                <input
+                  id="resCategory"
+                  placeholder="Podcast, Governance, Fireside…"
+                  value={resCategory}
+                  onChange={(e) => setResCategory(e.target.value)}
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="resUrl">URL (optional if uploading a file)</label>
+                <input
+                  id="resUrl"
+                  type="url"
+                  placeholder="https://"
+                  value={resUrl}
+                  onChange={(e) => setResUrl(e.target.value)}
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="resFile">File PDF/Word (optional)</label>
+                <input
+                  id="resFile"
+                  type="file"
+                  accept=".pdf,.doc,.docx,application/pdf"
+                  onChange={(e) => setResFile(e.target.files?.[0] || null)}
+                />
+              </div>
+              <button className="btn" type="submit" disabled={busy}>
+                {busy ? "Saving…" : "Publish resource"}
+              </button>
+            </form>
+
+            <ul className="portal-list" style={{ marginTop: 24 }}>
+              {resources.map((r) => (
+                <li key={r.id} className="portal-item">
+                  <div>
+                    {r.category ? <span className="portal-cat">{r.category}</span> : null}
+                    <strong>{r.title}</strong>
+                    {r.url ? <span className="portal-meta">{r.url}</span> : null}
+                    {r.hasFile && r.originalName ? (
+                      <span className="portal-meta">{r.originalName}</span>
+                    ) : null}
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-sm btn-sm--danger"
+                    onClick={() => deleteResource(r.id)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+              {!resources.length ? (
+                <li className="body" style={{ padding: "12px 0" }}>
+                  No shared resources yet.
+                </li>
+              ) : null}
+            </ul>
+          </section>
         </div>
       </main>
 
@@ -433,7 +699,7 @@ export default function AdminPage() {
           <aside className="review-panel" role="dialog" aria-labelledby="review-title">
             <header className="review-head">
               <div>
-                <p className="kicker">Submission</p>
+                <p className="kicker">Participant</p>
                 <h2 className="h2" id="review-title">
                   {detail.name}
                 </h2>
@@ -475,12 +741,117 @@ export default function AdminPage() {
             </header>
 
             <div className="review-body">
+              <section className="admin-portal-box">
+                <h3 className="h2" style={{ fontSize: 18 }}>
+                  Portal settings
+                </h3>
+                <div className="field">
+                  <label htmlFor="editStatus">Stage shown to participant</label>
+                  <select
+                    id="editStatus"
+                    value={editStatus}
+                    onChange={(e) => setEditStatus(e.target.value)}
+                    style={{ width: "100%", padding: "12px 14px" }}
+                  >
+                    {STATUSES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="editNext">Next steps (optional custom text)</label>
+                  <textarea
+                    id="editNext"
+                    value={editNextSteps}
+                    onChange={(e) => setEditNextSteps(e.target.value)}
+                    placeholder="Leave blank to use the default text for this stage."
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="btn-sm"
+                  disabled={rowBusy === detail.id}
+                  onClick={() => savePortalFields()}
+                >
+                  Save stage & next steps
+                </button>
+              </section>
+
+              <section className="review-files">
+                <h3 className="h2" style={{ fontSize: 18 }}>
+                  Personal portal documents
+                </h3>
+                <ul className="review-file-list">
+                  {(detail.portalDocs || []).map((d) => (
+                    <li key={d.id}>
+                      <div>
+                        <strong>{d.title}</strong>
+                        {d.url ? <span className="review-file-name">{d.url}</span> : null}
+                        {d.hasFile && d.originalName ? (
+                          <span className="review-file-name">{d.originalName}</span>
+                        ) : null}
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-sm btn-sm--danger"
+                        onClick={() => deletePersonalDoc(d.id)}
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                  {!(detail.portalDocs || []).length ? (
+                    <li className="body">No personal documents yet.</li>
+                  ) : null}
+                </ul>
+
+                <form onSubmit={addPersonalDoc} style={{ marginTop: 16 }}>
+                  <div className="field">
+                    <label htmlFor="docTitle">Document title</label>
+                    <input
+                      id="docTitle"
+                      value={docTitle}
+                      onChange={(e) => setDocTitle(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="docUrl">URL (optional)</label>
+                    <input
+                      id="docUrl"
+                      type="url"
+                      value={docUrl}
+                      onChange={(e) => setDocUrl(e.target.value)}
+                      placeholder="https://"
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="docFile">File PDF/Word (optional)</label>
+                    <input
+                      id="docFile"
+                      type="file"
+                      accept=".pdf,.doc,.docx,application/pdf"
+                      onChange={(e) => setDocFile(e.target.files?.[0] || null)}
+                    />
+                  </div>
+                  <button className="btn-sm" type="submit" disabled={rowBusy === detail.id}>
+                    Add to their portal
+                  </button>
+                </form>
+              </section>
+
               {!detail.submission ? (
-                <p className="body">No answers saved yet.</p>
+                <p className="body" style={{ marginTop: 28 }}>
+                  No workbook answers saved yet.
+                </p>
               ) : !answerEntries.length ? (
-                <p className="body">Submission exists but answers are empty.</p>
+                <p className="body" style={{ marginTop: 28 }}>
+                  Submission exists but answers are empty.
+                </p>
               ) : (
-                <dl className="review-list">
+                <dl className="review-list" style={{ marginTop: 28 }}>
                   {answerEntries.map(([key, value]) => {
                     const text = formatAnswer(value);
                     if (text === "—") return null;
@@ -511,7 +882,7 @@ export default function AdminPage() {
               {uploadedFiles.length ? (
                 <section className="review-files">
                   <h3 className="h2" style={{ fontSize: 18 }}>
-                    Uploaded documents
+                    Workbook uploads
                   </h3>
                   <ul className="review-file-list">
                     {uploadedFiles.map((f) => (
@@ -530,17 +901,7 @@ export default function AdminPage() {
                     ))}
                   </ul>
                 </section>
-              ) : (
-                <section className="review-files">
-                  <h3 className="h2" style={{ fontSize: 18 }}>
-                    Uploaded documents
-                  </h3>
-                  <p className="body">
-                    No files stored yet. Older submissions only saved the filename — ask the
-                    participant to re-upload after Reopen, or use new submissions.
-                  </p>
-                </section>
-              )}
+              ) : null}
             </div>
           </aside>
         </div>

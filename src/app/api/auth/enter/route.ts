@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
     const res = NextResponse.json({
       ok: true,
-      redirect: "/workbook",
+      redirect: "/portal",
       name: invite.name,
       status: invite.status,
     });

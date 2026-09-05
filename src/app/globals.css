@@ -392,3 +392,108 @@ textarea {
   padding-left: 1.2em;
   color: var(--ink-soft);
 }
+
+/* Participant portal */
+.portal-card {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--hair);
+}
+
+.portal-stage-now {
+  margin: 14px 0 18px;
+}
+
+.portal-stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.portal-stages li {
+  padding: 10px 14px;
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  font-size: 14.5px;
+  color: var(--ink-mute);
+  background: #fafafa;
+}
+
+.portal-stages li.is-current {
+  color: var(--ink);
+  font-weight: 700;
+  background: #fff;
+  border-color: var(--ct-black);
+  box-shadow: inset 4px 0 0 var(--ct-yellow);
+}
+
+.portal-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.portal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.portal-cat {
+  display: inline-block;
+  font-family: var(--font-n);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 6px;
+}
+
+.portal-desc {
+  margin: 6px 0 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.portal-meta {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--ink-mute);
+}
+
+.admin-portal-box {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.admin-portal-box .field {
+  margin-top: 14px;
+}
+
+.admin-portal-box textarea {
+  width: 100%;
+  min-height: 88px;
+  padding: 12px 14px;
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  background: #fff;
+  font: inherit;
+  resize: vertical;
+}
+
+.admin-section {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 2px solid var(--ct-yellow);
+}

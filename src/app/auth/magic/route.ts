@@ -67,7 +67,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  const res = NextResponse.redirect(new URL("/workbook", base));
+  const res = NextResponse.redirect(new URL("/portal", base));
   res.cookies.set(SESSION_COOKIE, sessionToken, {
     httpOnly: true,
     sameSite: "lax",
