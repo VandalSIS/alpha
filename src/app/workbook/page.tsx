@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "./workbook.css";
 
@@ -109,6 +110,7 @@ export default function WorkbookPage() {
       <div id="pw-root">
         <div className="pw-bar" role="banner">
           <div className="pw-bar-in">
+            <Link href="/portal" className="pw-portal-link">← Portal</Link>
             <span className="pw-kicker">Project Alpha · {boot.name}</span>
             <span className="pw-saved" id="pw-saved" role="status"></span>
             <div className="pw-prog" id="pw-prog" aria-hidden="true"></div>
