@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { resolveAuthRedirect } from "@/lib/auth-redirect";
 import { prisma } from "@/lib/db";
 import { generateSessionToken } from "@/lib/ids";
 import { SESSION_COOKIE } from "@/lib/session";
@@ -7,6 +8,7 @@ import { SESSION_COOKIE } from "@/lib/session";
 const bodySchema = z.object({
   code: z.string().min(4),
   email: z.string().email(),
+  next: z.enum(["portal", "workbook"]).optional(),
 });
 
 /**
@@ -57,7 +59,7 @@ export async function POST(req: Request) {
 
     const res = NextResponse.json({
       ok: true,
-      redirect: "/portal",
+      redirect: resolveAuthRedirect(data.next),
       name: invite.name,
       status: invite.status,
     });

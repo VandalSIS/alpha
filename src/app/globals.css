@@ -76,6 +76,23 @@ textarea {
   color: var(--ink-soft);
 }
 
+.enter-alt {
+  margin: 20px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.enter-alt a {
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: inset 0 -4px 0 var(--ct-yellow);
+}
+
+.enter-alt a:hover {
+  color: var(--ink);
+}
+
 .field {
   margin-top: 22px;
 }
