@@ -514,3 +514,58 @@ textarea {
   padding-top: 28px;
   border-top: 2px solid var(--ct-yellow);
 }
+
+.admin-section select,
+.table select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  background: #fff;
+  max-width: 100%;
+}
+
+.learn-body {
+  margin-top: 28px;
+  white-space: pre-wrap;
+  font-size: 16.5px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.learn-linked {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--ct-bone);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.learn-textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 12px 14px;
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  background: #fafafa;
+  font: inherit;
+  resize: vertical;
+}
+
+.learn-textarea:focus {
+  outline: none;
+  border-color: var(--ct-black);
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--ct-yellow);
+}
+
+.learn-session {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.kicker a {
+  color: inherit;
+  text-decoration: none;
+  box-shadow: inset 0 -4px 0 var(--ct-yellow);
+}

@@ -29,9 +29,9 @@ export function defaultNextSteps(status: InviteStatus): string {
     case "SUBMITTED":
       return "Your workbook is with the Project Alpha team. We will follow up with next steps.";
     case "IN_REVIEW":
-      return "Your materials are under review. Stay available for a conversation with the team.";
+      return "Your materials are under review. Use Learning to work through preparation for firesides and mock boards while the team follows up.";
     case "COMPLETE":
-      return "Your current Project Alpha stage is complete. Use the resources below to stay connected.";
+      return "Your current workbook stage is complete. Open Learning for modules, case work, and upcoming sessions with your cohort.";
     default:
       return "Check back here for your next steps, or write to projectalpha@christian-timbers.com.";
   }

@@ -142,6 +142,7 @@ export default function AdminPage() {
     try {
       await load(password);
       await loadResources(password);
+      sessionStorage.setItem("pa_admin_pw", password);
     } catch {
       setErr("Wrong password.");
     }

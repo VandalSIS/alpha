@@ -95,7 +95,7 @@ export default function PortalPage() {
               <p className="kicker">Project Alpha · participant portal</p>
               <h1 className="h1">Welcome, {data.name.split(" ")[0]}</h1>
               <p className="body" style={{ marginTop: 14 }}>
-                One place for your stage, next steps, documents, and Project Alpha resources.
+                One place for your stage, next steps, documents, learning, and Project Alpha resources.
               </p>
 
               <section className="portal-card" aria-labelledby="stage-h">
@@ -112,6 +112,19 @@ export default function PortalPage() {
                     </li>
                   ))}
                 </ol>
+              </section>
+
+              <section className="portal-card" aria-labelledby="learn-h">
+                <h2 className="h2" id="learn-h">
+                  Learning
+                </h2>
+                <p className="body" style={{ marginTop: 12 }}>
+                  See what is relevant to you, work through the material, submit a case, and read
+                  feedback. Modules connect to your cohort and upcoming sessions.
+                </p>
+                <Link className="btn" href="/portal/learning">
+                  Open learning
+                </Link>
               </section>
 
               <section className="portal-card" aria-labelledby="next-h">

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Project Alpha | Christian & Timbers",
-  description: "Board Aspiration and Readiness Workbook",
+  description: "Board Readiness and Development — workbook and participant portal",
   robots: { index: false, follow: false },
 };
 

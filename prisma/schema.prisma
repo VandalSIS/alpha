@@ -24,17 +24,84 @@ model Invitation {
   status      InviteStatus @default(INVITED)
   /// Custom next-step copy shown on the participant portal (optional).
   nextSteps   String?
+  cohortId    String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   invitedAt   DateTime     @default(now())
   startedAt   DateTime?
   submittedAt DateTime?
 
+  cohort      Cohort?          @relation(fields: [cohortId], references: [id], onDelete: SetNull)
   sessions    Session[]
   submission  Submission?
   magicLinks  MagicLink[]
   files       UploadedFile[]
   portalDocs  PortalDocument[]
+  caseResponses CaseResponse[]
+}
+
+model Cohort {
+  id           String              @id @default(cuid())
+  name         String
+  summary      String?
+  createdAt    DateTime            @default(now())
+  invitations  Invitation[]
+  modules      LearningModule[]
+  programmeSessions ProgrammeSession[]
+}
+
+model ProgrammeSession {
+  id        String    @id @default(cuid())
+  title     String
+  /// fireside | mock_board | peer | other
+  kind      String
+  startsAt  DateTime
+  location  String?
+  notes     String?
+  cohortId  String?
+  cohort    Cohort?   @relation(fields: [cohortId], references: [id], onDelete: SetNull)
+  createdAt DateTime  @default(now())
+  modules   LearningModule[]
+}
+
+model LearningModule {
+  id          String     @id @default(cuid())
+  title       String
+  summary     String
+  body        String
+  prompt      String?
+  relevantFor String?
+  published   Boolean    @default(true)
+  sortOrder   Int        @default(0)
+  cohortId    String?
+  sessionId   String?
+  createdAt   DateTime   @default(now())
+  cohort      Cohort?    @relation(fields: [cohortId], references: [id], onDelete: SetNull)
+  session     ProgrammeSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  cases       CaseResponse[]
+}
+
+model CaseResponse {
+  id           String        @id @default(cuid())
+  invitationId String
+  moduleId     String
+  body         String
+  submittedAt  DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  invitation   Invitation    @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  module       LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  feedback     CaseFeedback?
+
+  @@unique([invitationId, moduleId])
+}
+
+model CaseFeedback {
+  id             String       @id @default(cuid())
+  caseResponseId String       @unique
+  body           String
+  authorName     String       @default("Project Alpha team")
+  createdAt      DateTime     @default(now())
+  caseResponse   CaseResponse @relation(fields: [caseResponseId], references: [id], onDelete: Cascade)
 }
 
 model Session {
